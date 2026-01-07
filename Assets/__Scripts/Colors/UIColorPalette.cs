@@ -4,6 +4,8 @@ namespace UBUI.Colors
 {
     public class UIColorPalette
     {
+        public static UIColorPalette Default = new UIColorPalette();
+
         public Color TextColor = new Color(1f, 0.2941177f, 0.4901961f, 1f);
         public Color BackgroundColor = new Color(0.9764706f, 0.9686275f, 0.8352941f, 1f);
         public Color AccentColor = new Color(0.8784314f, 0.8705882f, 0.7490196f, 1f);
@@ -53,7 +55,7 @@ namespace UBUI.Colors
         }
 
 
-        public Color ColorFromEnum(UIColor color)
+        public Color GetColor(UIColor color)
         {
             switch(color)
             {

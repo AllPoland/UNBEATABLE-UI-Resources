@@ -1,12 +1,12 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace UBUI.Colors
 {
     public class ColorManager : MonoBehaviour
     {
+        public static ColorManager Instance { get; private set; }
+
         private UIColorPalette _colorPalette = new UIColorPalette();
         public UIColorPalette ColorPalette
         {
@@ -30,6 +30,18 @@ namespace UBUI.Colors
         public void ResetColors()
         {
             ColorPalette = new UIColorPalette();
+        }
+
+
+        private void Awake()
+        {
+            if(Instance && Instance != this)
+            {
+                enabled = false;
+                return;
+            }
+
+            Instance = this;
         }
     }
 }
