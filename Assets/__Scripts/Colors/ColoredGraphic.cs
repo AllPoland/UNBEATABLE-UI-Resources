@@ -1,12 +1,16 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace UBUI.Colors
 {
+    [Serializable]
     [ExecuteInEditMode]
     public class ColoredGraphic : MonoBehaviour
     {
+        public string componentName = "ColoredGraphic";
+
         public List<Graphic> targetGraphics;
         public UIColor color;
 
