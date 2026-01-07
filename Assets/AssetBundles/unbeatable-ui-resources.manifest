@@ -1,0 +1,35 @@
+ManifestFileVersion: 0
+CRC: 347457401
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: fa7c0a0c95b5f7c6cd9e8ac7d5471719
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 37e587f29c1b204568e28ad6ce43ed95
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: fa7c0a0c95b5f7c6cd9e8ac7d5471719
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: afcd0226df3e2023ea4626d956a70877, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 222
+  Script: {instanceID: 0}
+- Class: 224
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers:
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.Events.PersistentCallGroup
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.MaskableGraphic/CullStateChangedEvent
+Assets:
+- Assets/UIAssets/BaseAssets/ColoredImage.prefab
+- Assets/UIAssets/BaseAssets/BackgroundImage Variant.prefab
+Dependencies: []
