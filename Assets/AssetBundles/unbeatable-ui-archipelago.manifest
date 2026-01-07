@@ -1,24 +1,20 @@
 ManifestFileVersion: 0
-CRC: 4108018556
+CRC: 604784569
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 8777cc430e3bb395c1cfdfdf1c63506c
+    Hash: 30f04e0bd7c63f287733d3e5bc039851
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 7445c492ccf7bf03e5d915f3ec1dbbed
+    Hash: 45b8453d86ba281b66938fe07b8bb287
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 8777cc430e3bb395c1cfdfdf1c63506c
+    Hash: 30f04e0bd7c63f287733d3e5bc039851
 HashAppended: 0
 ClassTypes:
 - Class: 1
   Script: {instanceID: 0}
 - Class: 21
-  Script: {instanceID: 0}
-- Class: 28
-  Script: {instanceID: 0}
-- Class: 48
   Script: {instanceID: 0}
 - Class: 114
   Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
@@ -62,8 +58,6 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: UnityEngine.UI
   ClassName: UnityEngine.UI.MaskableGraphic/CullStateChangedEvent
 Assets:
-- Assets/UIAssets/BaseAssets/ColoredImage.prefab
-- Assets/UIAssets/BaseAssets/ColoredText.prefab
-- Assets/Fonts/Noto_Sans/NotoSans-Regular SDF.asset
-- Assets/UIAssets/BaseAssets/BackgroundImage Variant.prefab
-Dependencies: []
+- Assets/UIAssets/ArchipelagoAssets/ArchipelagoConnectionScreen.prefab
+Dependencies:
+- /home/polan/Documents/Projects/.Mods/UnityMods/UNBEATABLE-UI-Resources/Assets/AssetBundles/unbeatable-ui-resources

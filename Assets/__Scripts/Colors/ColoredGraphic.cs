@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 namespace UBUI.Colors
 {
+    [ExecuteInEditMode]
     public class ColoredGraphic : MonoBehaviour
     {
         [SerializeField] private List<Graphic> targetGraphics;
@@ -35,6 +36,11 @@ namespace UBUI.Colors
 
         private void OnEnable()
         {
+            if(targetGraphics == null)
+            {
+                targetGraphics = new List<Graphic>();
+            }
+
             if(targetGraphics.Count == 0)
             {
                 // Allows for shorthand addition of this component to a graphic

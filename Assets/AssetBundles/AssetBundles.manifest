@@ -1,7 +1,11 @@
 ManifestFileVersion: 0
-CRC: 2507251998
+CRC: 2779561285
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
       Name: unbeatable-ui-resources
       Dependencies: {}
+    Info_1:
+      Name: unbeatable-ui-archipelago
+      Dependencies:
+        Dependency_0: unbeatable-ui-resources
