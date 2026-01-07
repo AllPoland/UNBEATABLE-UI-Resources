@@ -7,8 +7,8 @@ namespace UBUI.Colors
     [ExecuteInEditMode]
     public class ColoredGraphic : MonoBehaviour
     {
-        [SerializeField] private List<Graphic> targetGraphics;
-        [SerializeField] private UIColor color;
+        public List<Graphic> targetGraphics;
+        public UIColor color;
 
 
         private void SetGraphicColors(Color newColor)
