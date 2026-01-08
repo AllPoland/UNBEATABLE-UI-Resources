@@ -32,9 +32,12 @@ namespace UBUI.Colors
         }
 
 
-        private void OnEnable()
+        private void Start()
         {
-            graphic = GetComponent<Graphic>();
+            if(!graphic)
+            {
+                graphic = GetComponent<Graphic>();
+            }
 
             if(ColorManager.Instance)
             {
@@ -45,7 +48,7 @@ namespace UBUI.Colors
         }
 
 
-        private void OnDisable()
+        private void OnDestroy()
         {
             if(ColorManager.Instance)
             {

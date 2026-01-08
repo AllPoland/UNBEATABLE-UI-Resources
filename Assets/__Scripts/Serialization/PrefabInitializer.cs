@@ -53,19 +53,19 @@ namespace UBUI.Serialization
         }
 
 
-        public static GameObject LoadPrefab(string prefabName, AssetBundle bundle)
+        public static GameObject LoadAndInstantiatePrefab(string prefabName, AssetBundle bundle, Transform parent)
         {
-            // Disable warnings about missing components
             GameObject prefab = bundle.LoadAsset<GameObject>(prefabName.ToLower());
 
+            GameObject instance = UnityEngine.Object.Instantiate(prefab, parent, false);
             if(!SerializedPrefabs.TryGetValue(prefabName.ToLower(), out SerializedGameObject serialized))
             {
                 // No custom components on this prefab
-                return prefab;
+                return instance;
             }
 
-            AddMissingComponents(prefab, serialized);
-            return prefab;
+            AddMissingComponents(instance, serialized);
+            return instance;
         }
     }
 }
