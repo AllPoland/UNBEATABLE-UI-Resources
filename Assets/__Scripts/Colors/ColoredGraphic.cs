@@ -1,27 +1,22 @@
 using System;
-using System.Collections.Generic;
+using UBUI.Serialization;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace UBUI.Colors
 {
     [Serializable]
-    [ExecuteInEditMode]
-    public class ColoredGraphic : MonoBehaviour
+    public class ColoredGraphicData
     {
-        public string componentName = "ColoredGraphic";
-
-        public List<Graphic> targetGraphics;
         public UIColor color;
+    }
 
 
-        private void SetGraphicColors(Color newColor)
-        {
-            foreach(Graphic graphic in targetGraphics)
-            {
-                graphic.color = newColor;
-            }
-        }
+    [ExecuteInEditMode]
+    [RequireComponent(typeof(Graphic))]
+    public class ColoredGraphic : SerializableComponent<ColoredGraphicData>
+    {
+        private Graphic graphic;
 
 
         private void UpdateColor()
@@ -33,30 +28,13 @@ namespace UBUI.Colors
             }
             else palette = UIColorPalette.Default;
 
-            Color newColor = palette.GetColor(color);
-            SetGraphicColors(newColor);
+            graphic.color = palette.GetColor(Data.color);
         }
 
 
         private void OnEnable()
         {
-            if(targetGraphics == null)
-            {
-                targetGraphics = new List<Graphic>();
-            }
-
-            if(targetGraphics.Count == 0)
-            {
-                // Allows for shorthand addition of this component to a graphic
-                Graphic target = GetComponent<Graphic>();
-                if(!target)
-                {
-                    // No target graphic
-                    return;
-                }
-
-                targetGraphics.Add(target);
-            }
+            graphic = GetComponent<Graphic>();
 
             if(ColorManager.Instance)
             {
@@ -64,6 +42,8 @@ namespace UBUI.Colors
             }
 
             UpdateColor();
+
+            PrefabSerializer.SerializePrefab(gameObject);
         }
 
 
@@ -73,6 +53,18 @@ namespace UBUI.Colors
             {
                 ColorManager.Instance.OnColorsChanged -= UpdateColor;
             }
+        }
+
+
+        public override void SetData(object data)
+        {
+            if(data is not ColoredGraphicData graphicData)
+            {
+                Data = default(ColoredGraphicData);
+                throw new InvalidCastException();
+            }
+
+            Data = graphicData;
         }
     }
 }

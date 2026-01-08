@@ -147,6 +147,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afcd0226df3e2023ea4626d956a70877, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetGraphics:
-  - {fileID: 8642375933842150166}
-  color: 0
+  Data:
+    targetGraphics: []
+    color: 1

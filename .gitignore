@@ -57,6 +57,10 @@ ExportedObj/
 # Unity3D generated file on crash reports
 sysinfo.txt
 
+# AssetBundle manifests
+*.manifest
+*.manifest.meta
+
 # Builds
 *.apk
 *.aab
