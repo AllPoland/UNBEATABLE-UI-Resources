@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -7,7 +8,26 @@ namespace UBUI.Serialization
 {
     public static class PrefabInitializer
     {
-        public static Dictionary<string, SerializedGameObject> SerializedPrefabs = new Dictionary<string, SerializedGameObject>();
+        private static Dictionary<string, SerializedGameObject> SerializedPrefabs = new Dictionary<string, SerializedGameObject>();
+
+
+        public static void AddComponentManifest(string bundlePath)
+        {
+            string manifestPath = bundlePath + "-components.json";
+            string json = File.ReadAllText(manifestPath);
+
+            Dictionary<string, SerializedGameObject> newPrefabs = JsonConvert.DeserializeObject<Dictionary<string, SerializedGameObject>>(json);
+            foreach(KeyValuePair<string, SerializedGameObject> pair in newPrefabs)
+            {
+                SerializedPrefabs[pair.Key] = pair.Value;
+            }
+        }
+
+
+        public static void ClearManifest()
+        {
+            SerializedPrefabs.Clear();
+        }
 
 
         private static void AddMissingComponents(GameObject gameObject, SerializedGameObject serialized)
