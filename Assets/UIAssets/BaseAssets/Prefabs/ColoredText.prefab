@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: <mspace=11>//<mspace=17> </mspace><cspace=0.35em>text.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: cf557b8c594aa15c29aa4ff71d69a5d3, type: 2}
   m_sharedMaterial: {fileID: -1465933197256718635, guid: cf557b8c594aa15c29aa4ff71d69a5d3, type: 2}
@@ -75,8 +75,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4288263092
-  m_fontColor: {r: 0.7058824, g: 0.7019608, b: 0.6, a: 1}
+    rgba: 4292212729
+  m_fontColor: {r: 0.9764706, g: 0.9686275, b: 0.8352941, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -101,7 +101,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 8192
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -148,5 +148,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Data:
-    targetGraphics: []
     color: 1
