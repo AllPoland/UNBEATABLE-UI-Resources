@@ -21,8 +21,8 @@ namespace UBUI.Serialization
                 }
 
                 SerializedComponent newComponent = new SerializedComponent();
-                newComponent.typeName = serializable.GetType().Name;
-                newComponent.dataTypeName = serializable.GetDataType().Name;
+                newComponent.typeName = serializable.GetType().FullName;
+                newComponent.dataTypeName = serializable.GetDataType().FullName;
                 newComponent.data = JsonConvert.SerializeObject(serializable.GetData());
 
                 customComponents.Add(newComponent);
