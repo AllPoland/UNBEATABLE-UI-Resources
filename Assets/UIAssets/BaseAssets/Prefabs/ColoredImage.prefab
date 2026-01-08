@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4690087517075135509}
   - component: {fileID: 365619448246079}
   - component: {fileID: 2052454900103683637}
-  - component: {fileID: 8998052418486117811}
+  - component: {fileID: 3047986717441182718}
   m_Layer: 5
   m_Name: ColoredImage
   m_TagString: Untagged
@@ -76,7 +76,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 3
---- !u!114 &8998052418486117811
+--- !u!114 &3047986717441182718
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

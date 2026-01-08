@@ -7,7 +7,7 @@ namespace UBUI.Serialization
 {
     public static class PrefabSerializer
     {
-        public static SerializedGameObject SerializePrefab(GameObject prefab)
+        public static SerializedGameObject SerializePrefab(GameObject prefab, bool destroy)
         {
             SerializedGameObject newObject = new SerializedGameObject();
 
@@ -26,6 +26,11 @@ namespace UBUI.Serialization
                 newComponent.data = JsonConvert.SerializeObject(serializable.GetData());
 
                 customComponents.Add(newComponent);
+
+                if(destroy)
+                {
+                    UnityEngine.Object.DestroyImmediate(component);
+                }
                 break;
             }
             newObject.customComponents = customComponents.ToArray();
@@ -33,7 +38,7 @@ namespace UBUI.Serialization
             List<SerializedGameObject> children = new List<SerializedGameObject>();
             foreach(Transform t in prefab.transform)
             {
-                children.Add(SerializePrefab(t.gameObject));
+                children.Add(SerializePrefab(t.gameObject, destroy));
             }
             newObject.children = children.ToArray();
 

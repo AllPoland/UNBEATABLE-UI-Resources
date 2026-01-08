@@ -30,7 +30,7 @@ namespace UBUI.Serialization
         }
 
 
-        private static void AddMissingComponents(GameObject gameObject, SerializedGameObject serialized)
+        public static void AddMissingComponents(GameObject gameObject, SerializedGameObject serialized)
         {
             foreach(SerializedComponent serializedComponent in serialized.customComponents)
             {
@@ -38,7 +38,6 @@ namespace UBUI.Serialization
                 Type dataType = Type.GetType(serializedComponent.dataTypeName);
 
                 SerializableComponent newComponent = (SerializableComponent)gameObject.AddComponent(type);
-                Debug.Log(newComponent.name);
 
                 object newData = JsonConvert.DeserializeObject(serializedComponent.data, dataType);
 

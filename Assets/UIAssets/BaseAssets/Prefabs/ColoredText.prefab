@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 527131469808539049}
   - component: {fileID: 8820458631352270951}
   - component: {fileID: 8642375933842150166}
-  - component: {fileID: 801939379257076543}
+  - component: {fileID: 6387020868317758845}
   m_Layer: 5
   m_Name: ColoredText
   m_TagString: Untagged
@@ -135,7 +135,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &801939379257076543
+--- !u!114 &6387020868317758845
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
