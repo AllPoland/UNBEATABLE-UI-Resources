@@ -40,7 +40,7 @@ namespace UBUI
                     }
 
                     GameObject prefab = bundle.LoadAsset<GameObject>(assetName);
-                    string shortName = Path.GetFileName(assetName);
+                    string shortName = Path.GetFileName(assetName).ToLower();
                     serializedComponents[shortName] = PrefabSerializer.SerializePrefab(prefab);
                 }
 

@@ -38,6 +38,8 @@ namespace UBUI.Serialization
                 Type dataType = Type.GetType(serializedComponent.dataTypeName);
 
                 SerializableComponent newComponent = (SerializableComponent)gameObject.AddComponent(type);
+                Debug.Log(newComponent.name);
+
                 object newData = JsonConvert.DeserializeObject(serializedComponent.data, dataType);
 
                 newComponent.SetData(newData);
@@ -54,10 +56,9 @@ namespace UBUI.Serialization
         public static GameObject LoadPrefab(string prefabName, AssetBundle bundle)
         {
             // Disable warnings about missing components
-#pragma warning disable
-            GameObject prefab = bundle.LoadAsset<GameObject>(prefabName);
-#pragma warning restore
-            if(!SerializedPrefabs.TryGetValue(prefabName, out SerializedGameObject serialized))
+            GameObject prefab = bundle.LoadAsset<GameObject>(prefabName.ToLower());
+
+            if(!SerializedPrefabs.TryGetValue(prefabName.ToLower(), out SerializedGameObject serialized))
             {
                 // No custom components on this prefab
                 return prefab;
