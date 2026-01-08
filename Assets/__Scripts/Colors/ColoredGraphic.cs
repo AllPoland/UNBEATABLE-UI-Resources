@@ -42,8 +42,6 @@ namespace UBUI.Colors
             }
 
             UpdateColor();
-
-            PrefabSerializer.SerializePrefab(gameObject);
         }
 
 
