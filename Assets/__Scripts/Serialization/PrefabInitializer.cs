@@ -53,7 +53,10 @@ namespace UBUI.Serialization
 
         public static GameObject LoadPrefab(string prefabName, AssetBundle bundle)
         {
+            // Disable warnings about missing components
+#pragma warning disable
             GameObject prefab = bundle.LoadAsset<GameObject>(prefabName);
+#pragma warning restore
             if(!SerializedPrefabs.TryGetValue(prefabName, out SerializedGameObject serialized))
             {
                 // No custom components on this prefab
