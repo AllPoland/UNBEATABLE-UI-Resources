@@ -6,19 +6,19 @@ namespace UBUI.Animation
     {
         private static UIState currentState;
 
-        public static event Action<UIState, UIState> OnStateChanged;
+        public static event Action<UIState, UIState, float> OnTransitionStart;
 
 
-        public static void SetState(UIState newState)
+        public static void SetState(UIState newState, float endDelay)
         {
-            OnStateChanged?.Invoke(currentState, newState);
+            OnTransitionStart?.Invoke(currentState, newState, endDelay);
             currentState = newState;
         }
 
 
-        public static void SetState(UIState oldState, UIState newState)
+        public static void SetState(UIState oldState, UIState newState, float endDelay)
         {
-            OnStateChanged?.Invoke(oldState, newState);
+            OnTransitionStart?.Invoke(oldState, newState, endDelay);
             currentState = newState;
         }
     }

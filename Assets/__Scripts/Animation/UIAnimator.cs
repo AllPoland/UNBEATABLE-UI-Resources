@@ -14,11 +14,6 @@ namespace UBUI.Animation
         public bool fade = false;
         public Ease easing = Ease.InQuad;
         public Ease reverseEasing = Ease.OutQuad;
-
-        public float delay = 0f;
-        public float reverseDelay = 0f;
-
-        public SerializedBehaviour<CanvasGroup> canvasGroup;
     }
 
 
@@ -26,33 +21,35 @@ namespace UBUI.Animation
     public class UIAnimator : SerializableComponent<UIAnimatorData>
     {
         private RectTransform rectTransform;
+        private CanvasGroup canvasGroup;
+
         private Vector2 startPos;
         private Vector2 endPos;
 
 
         public void PlayAnimation()
         {
-            rectTransform.DOAnchorPos(endPos, Data.duration).SetEase(Data.easing).SetDelay(Data.delay);
+            rectTransform.DOAnchorPos(endPos, Data.duration).SetEase(Data.easing);
 
-            if(Data.fade && Data.canvasGroup.Value)
+            if(Data.fade && canvasGroup)
             {
-                Data.canvasGroup.Value.DOFade(0f, Data.duration).SetDelay(Data.delay);
+                canvasGroup.DOFade(0f, Data.duration);
             }
         }
 
 
-        public void PlayAnimationReverse()
+        public void PlayAnimationReverse(float delay)
         {
-            rectTransform.DOAnchorPos(startPos, Data.duration).SetEase(Data.reverseEasing).SetDelay(Data.reverseDelay);
+            rectTransform.DOAnchorPos(startPos, Data.duration).SetEase(Data.reverseEasing).SetDelay(delay);
 
-            if(Data.fade && Data.canvasGroup.Value)
+            if(Data.fade && canvasGroup)
             {
-                Data.canvasGroup.Value.DOFade(1f, Data.duration).SetDelay(Data.reverseDelay);
+                canvasGroup.DOFade(1f, Data.duration).SetDelay(delay);
             }
         }
 
 
-        public void HandleNewState(UIState oldState, UIState newState)
+        public void HandleNewState(UIState oldState, UIState newState, float endDelay)
         {
             if(Data.eventState == UIState.None)
             {
@@ -65,7 +62,7 @@ namespace UBUI.Animation
             }
             else if(newState == Data.eventState && oldState != Data.eventState)
             {
-                PlayAnimationReverse();
+                PlayAnimationReverse(endDelay);
             }
         }
 
@@ -73,7 +70,7 @@ namespace UBUI.Animation
         public void Init()
         {
             rectTransform = (RectTransform)transform;
-            Data.canvasGroup.FindValue(rectTransform);
+            canvasGroup = GetComponent<CanvasGroup>();
 
             startPos = rectTransform.anchoredPosition;
             endPos = startPos + Data.positionOffset;
@@ -88,13 +85,13 @@ namespace UBUI.Animation
         
         private void OnEnable()
         {
-            UIStateManager.OnStateChanged += HandleNewState;
+            UIStateManager.OnTransitionStart += HandleNewState;
         }
 
 
         private void OnDisable()
         {
-            UIStateManager.OnStateChanged -= HandleNewState;
+            UIStateManager.OnTransitionStart -= HandleNewState;
         }
     }
 }
