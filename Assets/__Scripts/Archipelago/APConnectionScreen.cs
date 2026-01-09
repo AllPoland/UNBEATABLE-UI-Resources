@@ -11,6 +11,7 @@ namespace UBUI.Archipelago
     public class APConnectionScreenData : SerializableData
     {
         public SerializedReference<TMP_InputField> ipInput;
+        public SerializedReference<TMP_InputField> portInput;
         public SerializedReference<TMP_InputField> slotInput;
         public SerializedReference<TMP_InputField> passInput;
         public SerializedReference<Button> connectButton;
@@ -25,18 +26,10 @@ namespace UBUI.Archipelago
         {
             APConnectionInfo info = new APConnectionInfo();
 
-            if(Data.ipInput?.Value)
-            {
-                info.ip = Data.ipInput.Value.text;
-            }
-            if(Data.slotInput?.Value)
-            {
-                info.slot = Data.slotInput.Value.text;
-            }
-            if(Data.passInput?.Value)
-            {
-                info.pass = Data.passInput.Value.text;
-            }
+            info.ip = Data.ipInput.Value.text;
+            info.port = Data.portInput.Value.text;
+            info.slot = Data.slotInput.Value.text;
+            info.pass = Data.passInput.Value.text;
 
             return info;
         }
@@ -44,18 +37,10 @@ namespace UBUI.Archipelago
 
         public void SetConnectionInfo(APConnectionInfo info)
         {
-            if(Data.ipInput?.Value)
-            {
-                Data.ipInput.Value.text = info.ip;
-            }
-            if(Data.slotInput?.Value)
-            {
-                Data.slotInput.Value.text = info.slot;
-            }
-            if(Data.passInput?.Value)
-            {
-                Data.passInput.Value.text = info.pass;
-            }
+            Data.ipInput.Value.text = info.ip;
+            Data.portInput.Value.text = info.port;
+            Data.slotInput.Value.text = info.slot;
+            Data.passInput.Value.text = info.pass;
         }
 
 
@@ -73,10 +58,7 @@ namespace UBUI.Archipelago
             Data.passInput.FindValue(t);
 
             Data.connectButton.FindValue(t);
-            if(Data.connectButton.Value)
-            {
-                Data.connectButton.Value.onClick.AddListener(Connect);
-            }
+            Data.connectButton.Value.onClick.AddListener(Connect);
         }
     }
 
@@ -84,6 +66,7 @@ namespace UBUI.Archipelago
     public struct APConnectionInfo
     {
         public string ip;
+        public string port;
         public string slot;
         public string pass;
     }
