@@ -54,6 +54,7 @@ namespace UBUI.Archipelago
         {
             Transform t = transform;
             Data.ipInput.FindValue(t);
+            Data.portInput.FindValue(t);
             Data.slotInput.FindValue(t);
             Data.passInput.FindValue(t);
 

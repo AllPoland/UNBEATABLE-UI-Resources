@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Data:
-    color: 3
+    color: 2
 --- !u!1 &3533195440959002071
 GameObject:
   m_ObjectHideFlags: 0
