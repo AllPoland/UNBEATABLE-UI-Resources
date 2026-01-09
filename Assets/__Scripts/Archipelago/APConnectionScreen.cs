@@ -21,6 +21,7 @@ namespace UBUI.Archipelago
     public class APConnectionScreen : SerializableComponent<APConnectionScreenData>
     {
         private const string connectingText = "<mspace=11>//<mspace=17> </mspace><cspace=0.35em>...";
+        private const string disconnectText = "<mspace=11>//<mspace=17> </mspace><cspace=0.35em>disconnect.";
 
         [NonSerialized] public UnityEvent OnConnect = new UnityEvent();
 
@@ -47,6 +48,19 @@ namespace UBUI.Archipelago
             Data.portInput.Value.text = info.port;
             Data.slotInput.Value.text = info.slot;
             Data.passInput.Value.text = info.pass;
+        }
+
+
+        public void SetConnected()
+        {
+            buttonText.text = disconnectText;
+            
+            Data.ipInput.Value.interactable = false;
+            Data.portInput.Value.interactable = false;
+            Data.slotInput.Value.interactable = false;
+            Data.passInput.Value.interactable = false;
+
+            Data.errorText.Value.text = "<cspace=0.15em>[connected.]";
         }
 
 
