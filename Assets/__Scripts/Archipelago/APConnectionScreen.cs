@@ -113,12 +113,6 @@ namespace UBUI.Archipelago
 
             Data.connectButton.Value.onClick.AddListener(Connect);
         }
-
-
-        private void Start()
-        {
-            Init();
-        }
     }
 
 
