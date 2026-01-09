@@ -6,7 +6,7 @@ using UnityEngine.UI;
 namespace UBUI.Colors
 {
     [Serializable]
-    public class ColoredGraphicData
+    public class ColoredGraphicData : SerializableData
     {
         public UIColor color;
     }
@@ -54,18 +54,6 @@ namespace UBUI.Colors
             {
                 ColorManager.Instance.OnColorsChanged -= UpdateColor;
             }
-        }
-
-
-        public override void SetData(object data)
-        {
-            if(data is not ColoredGraphicData graphicData)
-            {
-                Data = default(ColoredGraphicData);
-                throw new InvalidCastException();
-            }
-
-            Data = graphicData;
         }
     }
 }
