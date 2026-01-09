@@ -30,7 +30,6 @@ namespace UBUI.Serialization
                 {
                     Object.DestroyImmediate(component);
                 }
-                break;
             }
             newObject.components = components.ToArray();
             
