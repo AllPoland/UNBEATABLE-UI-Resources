@@ -81,24 +81,17 @@ namespace UBUI.Animation
         {
             Init();
         }
-    }
+
+        
+        private void OnEnable()
+        {
+            UIStateManager.OnStateChanged += HandleNewState;
+        }
 
 
-    public enum UIState
-    {
-        None,
-        TitleScreen,
-        MainMenu,
-        SongSelect,
-        DifficultySelect,
-        FilterSelect,
-        Leaderboard,
-        Modifiers,
-        FolioView,
-        ChallengeView,
-        CharacterSelect,
-        PlayerLeaderboard,
-        PlayerStats,
-        Any = int.MaxValue
+        private void OnDisable()
+        {
+            UIStateManager.OnStateChanged -= HandleNewState;
+        }
     }
 }
