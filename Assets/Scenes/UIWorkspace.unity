@@ -677,6 +677,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ArchipelagoConnectionScreen
       objectReference: {fileID: 0}
+    - target: {fileID: 2347803921833945956, guid: 2250282a2c74cccaaa3c892d45e51826, type: 3}
+      propertyPath: m_Name
+      value: NotifText
+      objectReference: {fileID: 0}
     - target: {fileID: 3216350097777197586, guid: 2250282a2c74cccaaa3c892d45e51826, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0

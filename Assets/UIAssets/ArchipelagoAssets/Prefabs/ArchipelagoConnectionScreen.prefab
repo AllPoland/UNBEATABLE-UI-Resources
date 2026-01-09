@@ -105,6 +105,9 @@ MonoBehaviour:
     connectButton:
       Value: {fileID: 2644210456394019619}
       name: 
+    errorText:
+      Value: {fileID: 3622568319178825555}
+      name: 
 --- !u!1001 &237707914577561548
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1021,7 +1024,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9114628928791701535, guid: e15c2f842bc4ee2fdb0c67c1f165408a, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 193.66
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9114628928791701535, guid: e15c2f842bc4ee2fdb0c67c1f165408a, type: 3}
       propertyPath: m_SizeDelta.y
@@ -1033,7 +1036,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9114628928791701535, guid: e15c2f842bc4ee2fdb0c67c1f165408a, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -16.345
+      value: -0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1278,7 +1281,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7295552757184423713, guid: 38ec12ce43cc9de64b4b5733193e558a, type: 3}
       propertyPath: m_Name
-      value: NotConnectedText
+      value: NotifText
       objectReference: {fileID: 0}
     - target: {fileID: 8642375933842150166, guid: 38ec12ce43cc9de64b4b5733193e558a, type: 3}
       propertyPath: m_text
@@ -1297,6 +1300,10 @@ PrefabInstance:
       value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 8642375933842150166, guid: 38ec12ce43cc9de64b4b5733193e558a, type: 3}
+      propertyPath: m_enableWordWrapping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8642375933842150166, guid: 38ec12ce43cc9de64b4b5733193e558a, type: 3}
       propertyPath: m_HorizontalAlignment
       value: 4
       objectReference: {fileID: 0}
@@ -1305,6 +1312,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 38ec12ce43cc9de64b4b5733193e558a, type: 3}
+--- !u!114 &3622568319178825555 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8642375933842150166, guid: 38ec12ce43cc9de64b4b5733193e558a, type: 3}
+  m_PrefabInstance: {fileID: 5019844173935086661}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &4826362268191627756 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 527131469808539049, guid: 38ec12ce43cc9de64b4b5733193e558a, type: 3}
