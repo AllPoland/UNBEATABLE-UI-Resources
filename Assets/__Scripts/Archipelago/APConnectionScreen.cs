@@ -15,6 +15,9 @@ namespace UBUI.Archipelago
 
     public class APConnectionScreen : SerializableComponent<APConnectionScreenData>
     {
+        public event Action OnConnect;
+
+
         public APConnectionInfo GetConnectionInfo()
         {
             APConnectionInfo info = new APConnectionInfo();
@@ -33,6 +36,12 @@ namespace UBUI.Archipelago
             }
 
             return info;
+        }
+
+
+        public void Connect()
+        {
+            OnConnect?.Invoke();
         }
 
 

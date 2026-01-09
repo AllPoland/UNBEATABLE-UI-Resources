@@ -1113,6 +1113,34 @@ PrefabInstance:
       propertyPath: m_text
       value: <mspace=11>//<mspace=17> </mspace><cspace=0.35em>connect.
       objectReference: {fileID: 0}
+    - target: {fileID: 1578107085869724274, guid: e15c2f842bc4ee2fdb0c67c1f165408a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1578107085869724274, guid: e15c2f842bc4ee2fdb0c67c1f165408a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1578107085869724274, guid: e15c2f842bc4ee2fdb0c67c1f165408a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2810513740542527695}
+    - target: {fileID: 1578107085869724274, guid: e15c2f842bc4ee2fdb0c67c1f165408a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1578107085869724274, guid: e15c2f842bc4ee2fdb0c67c1f165408a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Connect
+      objectReference: {fileID: 0}
+    - target: {fileID: 1578107085869724274, guid: e15c2f842bc4ee2fdb0c67c1f165408a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: UBUI.Archipelago.APConnectionScreen, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1578107085869724274, guid: e15c2f842bc4ee2fdb0c67c1f165408a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2040171406287980319, guid: e15c2f842bc4ee2fdb0c67c1f165408a, type: 3}
       propertyPath: m_Pivot.x
       value: 0
