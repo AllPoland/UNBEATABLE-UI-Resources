@@ -2126,12 +2126,20 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 994434203657382677, guid: a93459454a0d194e09f8056e5ef96ff3, type: 3}
+      propertyPath: m_CharacterLimit
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 994434203657382677, guid: a93459454a0d194e09f8056e5ef96ff3, type: 3}
       propertyPath: m_CharacterValidation
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3369464358860603465, guid: a93459454a0d194e09f8056e5ef96ff3, type: 3}
       propertyPath: m_text
       value: 58008
+      objectReference: {fileID: 0}
+    - target: {fileID: 3369464358860603465, guid: a93459454a0d194e09f8056e5ef96ff3, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5155127311947702414, guid: a93459454a0d194e09f8056e5ef96ff3, type: 3}
       propertyPath: m_Pivot.x
