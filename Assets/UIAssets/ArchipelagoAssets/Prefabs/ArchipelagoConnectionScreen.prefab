@@ -137,17 +137,14 @@ MonoBehaviour:
   Data:
     duration: 0.5
     eventState: 2
+    delayMatch: YourProfileUI
+    delayMod: 0.1
     positionOffset:
       x: 150
       y: 0
     fade: 1
     easing: 5
     reverseEasing: 6
-    delay: 0
-    reverseDelay: 0.5
-    canvasGroup:
-      Value: {fileID: 4246271902621016243}
-      name: 
 --- !u!1001 &237707914577561548
 PrefabInstance:
   m_ObjectHideFlags: 0

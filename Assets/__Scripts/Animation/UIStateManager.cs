@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace UBUI.Animation
 {
@@ -6,19 +7,19 @@ namespace UBUI.Animation
     {
         private static UIState currentState;
 
-        public static event Action<UIState, UIState, float> OnTransitionStart;
+        public static event Action<UIState, UIState, Dictionary<string, float>> OnTransitionStart;
 
 
-        public static void SetState(UIState newState, float endDelay)
+        public static void SetState(UIState newState, Dictionary<string, float> delays)
         {
-            OnTransitionStart?.Invoke(currentState, newState, endDelay);
+            OnTransitionStart?.Invoke(currentState, newState, delays);
             currentState = newState;
         }
 
 
-        public static void SetState(UIState oldState, UIState newState, float endDelay)
+        public static void SetState(UIState oldState, UIState newState, Dictionary<string, float> delays)
         {
-            OnTransitionStart?.Invoke(oldState, newState, endDelay);
+            OnTransitionStart?.Invoke(oldState, newState, delays);
             currentState = newState;
         }
     }

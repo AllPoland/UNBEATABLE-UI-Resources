@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using UBUI.Serialization;
 using UnityEngine;
@@ -10,6 +11,9 @@ namespace UBUI.Animation
     {
         public float duration = 0.2f;
         public UIState eventState = UIState.None;
+        public string delayMatch = "";
+        public float delayMod = 0f;
+
         public SerializedVector2 positionOffset = SerializedVector2.zero;
         public bool fade = false;
         public Ease easing = Ease.InQuad;
@@ -38,8 +42,14 @@ namespace UBUI.Animation
         }
 
 
-        public void PlayAnimationReverse(float delay)
+        public void PlayAnimationReverse(Dictionary<string, float> delays)
         {
+            if(string.IsNullOrEmpty(Data.delayMatch) || !delays.TryGetValue(Data.delayMatch, out float delay))
+            {
+                delay = 0f;
+            }
+            delay += Data.delayMod;
+
             rectTransform.DOAnchorPos(startPos, Data.duration).SetEase(Data.reverseEasing).SetDelay(delay);
 
             if(Data.fade && canvasGroup)
@@ -49,7 +59,7 @@ namespace UBUI.Animation
         }
 
 
-        public void HandleNewState(UIState oldState, UIState newState, float endDelay)
+        public void HandleNewState(UIState oldState, UIState newState, Dictionary<string, float> delays)
         {
             if(oldState == Data.eventState && newState != Data.eventState)
             {
@@ -57,7 +67,7 @@ namespace UBUI.Animation
             }
             else if(newState == Data.eventState && oldState != Data.eventState)
             {
-                PlayAnimationReverse(endDelay);
+                PlayAnimationReverse(delays);
             }
         }
 
@@ -69,17 +79,7 @@ namespace UBUI.Animation
 
             startPos = rectTransform.anchoredPosition;
             endPos = startPos + Data.positionOffset;
-        }
 
-
-        private void Awake()
-        {
-            Init();
-        }
-
-        
-        private void Start()
-        {
             UIStateManager.OnTransitionStart += HandleNewState;
         }
 
