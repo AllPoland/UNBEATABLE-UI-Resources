@@ -135,11 +135,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Data:
-    duration: 0.2
+    duration: 0.4
     eventState: 2
-    positionOffset: {x: 200, y: 0}
-    fade: 0
-    easing: 6
+    positionOffset: {x: 150, y: 0}
+    fade: 1
+    easing: 5
+    reverseEasing: 6
     canvasGroup:
       Value: {fileID: 4246271902621016243}
       name: 

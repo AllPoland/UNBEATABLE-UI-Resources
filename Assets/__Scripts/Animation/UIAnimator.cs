@@ -12,7 +12,8 @@ namespace UBUI.Animation
         public UIState eventState = UIState.None;
         public Vector2 positionOffset = Vector2.zero;
         public bool fade = false;
-        public Ease easing = Ease.OutQuad;
+        public Ease easing = Ease.InQuad;
+        public Ease reverseEasing = Ease.OutQuad;
 
         public SerializedBehaviour<CanvasGroup> canvasGroup;
     }
@@ -39,7 +40,7 @@ namespace UBUI.Animation
 
         public void PlayAnimationReverse()
         {
-            rectTransform.DOAnchorPos(startPos, Data.duration).SetEase(Data.easing);
+            rectTransform.DOAnchorPos(startPos, Data.duration).SetEase(Data.reverseEasing);
 
             if(Data.fade && Data.canvasGroup.Value)
             {
