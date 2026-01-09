@@ -51,11 +51,6 @@ namespace UBUI.Animation
 
         public void HandleNewState(UIState oldState, UIState newState, float endDelay)
         {
-            if(Data.eventState == UIState.None)
-            {
-                return;
-            }
-
             if(oldState == Data.eventState && newState != Data.eventState)
             {
                 PlayAnimation();
