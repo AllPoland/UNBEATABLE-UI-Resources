@@ -74,7 +74,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 384.99997, y: -85}
+  m_AnchoredPosition: {x: 392.5, y: -85}
   m_SizeDelta: {x: 395, y: 240}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &2810513740542527695
@@ -376,7 +376,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1983597782036926519, guid: ac4efccbe48d6060c98b2f691d66f929, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -5
+      value: -7.5
       objectReference: {fileID: 0}
     - target: {fileID: 1983597782036926519, guid: ac4efccbe48d6060c98b2f691d66f929, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -651,7 +651,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1983597782036926519, guid: ac4efccbe48d6060c98b2f691d66f929, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 5
+      value: 7.5
       objectReference: {fileID: 0}
     - target: {fileID: 1983597782036926519, guid: ac4efccbe48d6060c98b2f691d66f929, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1222,7 +1222,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 527131469808539049, guid: 38ec12ce43cc9de64b4b5733193e558a, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 527131469808539049, guid: 38ec12ce43cc9de64b4b5733193e558a, type: 3}
       propertyPath: m_SizeDelta.y
@@ -1258,7 +1258,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 527131469808539049, guid: 38ec12ce43cc9de64b4b5733193e558a, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 527131469808539049, guid: 38ec12ce43cc9de64b4b5733193e558a, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1278,7 +1278,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7295552757184423713, guid: 38ec12ce43cc9de64b4b5733193e558a, type: 3}
       propertyPath: m_Name
-      value: ColoredText
+      value: NotConnectedText
       objectReference: {fileID: 0}
     - target: {fileID: 8642375933842150166, guid: 38ec12ce43cc9de64b4b5733193e558a, type: 3}
       propertyPath: m_text
