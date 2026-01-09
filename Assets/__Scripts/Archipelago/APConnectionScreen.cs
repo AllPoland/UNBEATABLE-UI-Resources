@@ -1,5 +1,6 @@
 using System;
 using TMPro;
+using UBUI.Animation;
 using UBUI.Serialization;
 using UnityEngine;
 using UnityEngine.Events;
@@ -129,6 +130,12 @@ namespace UBUI.Archipelago
             originalButtonText = buttonText.text;
 
             Data.connectButton.Value.onClick.AddListener(Connect);
+
+            UIAnimator animator = GetComponent<UIAnimator>();
+            if(animator)
+            {
+                animator.Init();
+            }
         }
     }
 
