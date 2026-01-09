@@ -418,38 +418,20 @@ PrefabInstance:
       propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8145297526617321641, guid: ac4efccbe48d6060c98b2f691d66f929, type: 3}
+      propertyPath: Data.color
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4030869695213679252, guid: ac4efccbe48d6060c98b2f691d66f929, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6406334306026991180}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ac4efccbe48d6060c98b2f691d66f929, type: 3}
 --- !u!224 &2174151883333645777 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1983597782036926519, guid: ac4efccbe48d6060c98b2f691d66f929, type: 3}
   m_PrefabInstance: {fileID: 408424804845708774}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &3628637495556593522 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4030869695213679252, guid: ac4efccbe48d6060c98b2f691d66f929, type: 3}
-  m_PrefabInstance: {fileID: 408424804845708774}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &6406334306026991180
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3628637495556593522}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: afcd0226df3e2023ea4626d956a70877, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Data:
-    color: 1
 --- !u!1001 &809892781675881294
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -697,19 +679,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5110009737548730903, guid: ac4efccbe48d6060c98b2f691d66f929, type: 3}
       propertyPath: m_Color.b
-      value: 0.4901961
+      value: 0.8352941
       objectReference: {fileID: 0}
     - target: {fileID: 5110009737548730903, guid: ac4efccbe48d6060c98b2f691d66f929, type: 3}
       propertyPath: m_Color.g
-      value: 0.2941177
+      value: 0.9686275
       objectReference: {fileID: 0}
     - target: {fileID: 5110009737548730903, guid: ac4efccbe48d6060c98b2f691d66f929, type: 3}
       propertyPath: m_Color.r
-      value: 1
+      value: 0.9764706
       objectReference: {fileID: 0}
     - target: {fileID: 5110009737548730903, guid: ac4efccbe48d6060c98b2f691d66f929, type: 3}
       propertyPath: m_RaycastTarget
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8145297526617321641, guid: ac4efccbe48d6060c98b2f691d66f929, type: 3}
+      propertyPath: Data.color
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
