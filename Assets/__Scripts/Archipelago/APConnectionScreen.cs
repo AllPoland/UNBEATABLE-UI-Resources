@@ -3,6 +3,7 @@ using TMPro;
 using UBUI.Serialization;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace UBUI.Archipelago
 {
@@ -12,6 +13,7 @@ namespace UBUI.Archipelago
         public SerializedReference<TMP_InputField> ipInput;
         public SerializedReference<TMP_InputField> slotInput;
         public SerializedReference<TMP_InputField> passInput;
+        public SerializedReference<Button> connectButton;
     }
 
     public class APConnectionScreen : SerializableComponent<APConnectionScreenData>
@@ -69,6 +71,12 @@ namespace UBUI.Archipelago
             Data.ipInput.FindValue(t);
             Data.slotInput.FindValue(t);
             Data.passInput.FindValue(t);
+
+            Data.connectButton.FindValue(t);
+            if(Data.connectButton.Value)
+            {
+                Data.connectButton.Value.onClick.AddListener(Connect);
+            }
         }
     }
 
