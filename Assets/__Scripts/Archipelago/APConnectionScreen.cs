@@ -50,7 +50,7 @@ namespace UBUI.Archipelago
         }
 
 
-        private void Start()
+        private void Awake()
         {
             Transform t = transform;
             Data.ipInput.FindValue(t);
