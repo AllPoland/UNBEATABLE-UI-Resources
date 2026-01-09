@@ -10,7 +10,7 @@ namespace UBUI.Animation
     {
         public float duration = 0.2f;
         public UIState eventState = UIState.None;
-        public Vector2 positionOffset = Vector2.zero;
+        public SerializedVector2 positionOffset = SerializedVector2.zero;
         public bool fade = false;
         public Ease easing = Ease.InQuad;
         public Ease reverseEasing = Ease.OutQuad;
