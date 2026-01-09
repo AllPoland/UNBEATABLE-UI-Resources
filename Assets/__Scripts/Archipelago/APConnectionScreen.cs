@@ -79,6 +79,9 @@ namespace UBUI.Archipelago
                 case FailConnectionReason.BadItemHandle:
                     errorMessage = "incorrect item flags.";
                     break;
+                case FailConnectionReason.ClientError:
+                    errorMessage = "client error. check logs.";
+                    break;
             }
 
             Data.errorText.Value.text = $"<cspace=0.15em>[{errorMessage}]</cspace>";
@@ -134,6 +137,7 @@ namespace UBUI.Archipelago
         SlotTaken,
         BadVersion,
         WrongPassword,
-        BadItemHandle
+        BadItemHandle,
+        ClientError
     }
 }
