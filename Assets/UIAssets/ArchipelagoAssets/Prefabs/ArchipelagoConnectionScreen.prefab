@@ -49,6 +49,8 @@ GameObject:
   m_Component:
   - component: {fileID: 671404500778785136}
   - component: {fileID: 2810513740542527695}
+  - component: {fileID: 4246271902621016243}
+  - component: {fileID: 549688581900125524}
   m_Layer: 5
   m_Name: ArchipelagoConnectionScreen
   m_TagString: Untagged
@@ -107,6 +109,39 @@ MonoBehaviour:
       name: 
     errorText:
       Value: {fileID: 3622568319178825555}
+      name: 
+--- !u!225 &4246271902621016243
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2138749304310050537}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &549688581900125524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2138749304310050537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1801796a6b2e4f39b801edb062458155, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Data:
+    duration: 0.2
+    eventState: 2
+    positionOffset: {x: 200, y: 0}
+    fade: 0
+    easing: 6
+    canvasGroup:
+      Value: {fileID: 4246271902621016243}
       name: 
 --- !u!1001 &237707914577561548
 PrefabInstance:
@@ -1024,7 +1059,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9114628928791701535, guid: e15c2f842bc4ee2fdb0c67c1f165408a, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 193.66
       objectReference: {fileID: 0}
     - target: {fileID: 9114628928791701535, guid: e15c2f842bc4ee2fdb0c67c1f165408a, type: 3}
       propertyPath: m_SizeDelta.y
@@ -1036,7 +1071,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9114628928791701535, guid: e15c2f842bc4ee2fdb0c67c1f165408a, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0
+      value: -16.345
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
