@@ -50,7 +50,7 @@ namespace UBUI.Archipelago
         }
 
 
-        private void Awake()
+        public void FindValues()
         {
             Transform t = transform;
             Data.ipInput.FindValue(t);
@@ -58,6 +58,12 @@ namespace UBUI.Archipelago
             Data.passInput.FindValue(t);
 
             Data.connectButton.FindValue(t);
+        }
+
+
+        private void Awake()
+        {
+            FindValues();
             Data.connectButton.Value.onClick.AddListener(Connect);
         }
     }
