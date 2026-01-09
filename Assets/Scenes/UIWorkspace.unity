@@ -535,7 +535,7 @@ PrefabInstance:
     - target: {fileID: 1578107085869724274, guid: e15c2f842bc4ee2fdb0c67c1f165408a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 6800018462943060889}
+      objectReference: {fileID: 6800018462943060891}
     - target: {fileID: 1578107085869724274, guid: e15c2f842bc4ee2fdb0c67c1f165408a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -824,7 +824,7 @@ PrefabInstance:
     - target: {fileID: 1578107085869724274, guid: e15c2f842bc4ee2fdb0c67c1f165408a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 6800018462943060889}
+      objectReference: {fileID: 6800018462943060891}
     - target: {fileID: 1578107085869724274, guid: e15c2f842bc4ee2fdb0c67c1f165408a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -1097,7 +1097,7 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 671404500778785136, guid: 2250282a2c74cccaaa3c892d45e51826, type: 3}
   m_PrefabInstance: {fileID: 6800018462943060887}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6800018462943060889 stripped
+--- !u!114 &6800018462943060891 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 549688581900125524, guid: 2250282a2c74cccaaa3c892d45e51826, type: 3}
   m_PrefabInstance: {fileID: 6800018462943060887}

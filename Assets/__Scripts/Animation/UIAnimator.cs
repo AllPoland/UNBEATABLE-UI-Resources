@@ -15,6 +15,9 @@ namespace UBUI.Animation
         public Ease easing = Ease.InQuad;
         public Ease reverseEasing = Ease.OutQuad;
 
+        public float delay = 0f;
+        public float reverseDelay = 0f;
+
         public SerializedBehaviour<CanvasGroup> canvasGroup;
     }
 
@@ -29,22 +32,22 @@ namespace UBUI.Animation
 
         public void PlayAnimation()
         {
-            rectTransform.DOAnchorPos(endPos, Data.duration).SetEase(Data.easing);
+            rectTransform.DOAnchorPos(endPos, Data.duration).SetEase(Data.easing).SetDelay(Data.delay);
 
             if(Data.fade && Data.canvasGroup.Value)
             {
-                Data.canvasGroup.Value.DOFade(0f, Data.duration);
+                Data.canvasGroup.Value.DOFade(0f, Data.duration).SetDelay(Data.delay);
             }
         }
 
 
         public void PlayAnimationReverse()
         {
-            rectTransform.DOAnchorPos(startPos, Data.duration).SetEase(Data.reverseEasing);
+            rectTransform.DOAnchorPos(startPos, Data.duration).SetEase(Data.reverseEasing).SetDelay(Data.reverseDelay);
 
             if(Data.fade && Data.canvasGroup.Value)
             {
-                Data.canvasGroup.Value.DOFade(1f, Data.duration);
+                Data.canvasGroup.Value.DOFade(1f, Data.duration).SetDelay(Data.reverseDelay);
             }
         }
 
