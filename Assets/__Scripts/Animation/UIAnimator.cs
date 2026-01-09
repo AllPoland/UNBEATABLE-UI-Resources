@@ -78,13 +78,13 @@ namespace UBUI.Animation
         }
 
         
-        private void OnEnable()
+        private void Start()
         {
             UIStateManager.OnTransitionStart += HandleNewState;
         }
 
 
-        private void OnDisable()
+        private void OnDestroy()
         {
             UIStateManager.OnTransitionStart -= HandleNewState;
         }
