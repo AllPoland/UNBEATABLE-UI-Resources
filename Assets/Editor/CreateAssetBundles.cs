@@ -10,6 +10,7 @@ namespace UBUI
     public class CreateAssetBundles
     {
         public const string AssetBundleDirectory = "Assets/AssetBundles";
+        public const string BackupDirectory = "Assets/PrefabBackups";
 
 
         [MenuItem("Assets/Build AssetBundles")]
@@ -24,7 +25,7 @@ namespace UBUI
             // Preprocess prefabs by serializing and removing all custom components
             // We serialize them manually since their script references are gone when loaded in a plugin
             string[] bundles = AssetDatabase.GetAllAssetBundleNames();
-            Dictionary<string, SerializedGameObject> prefabsToRestore = new Dictionary<string, SerializedGameObject>();
+            Dictionary<string, string> prefabsToRestore = new Dictionary<string, string>();
 
             foreach(string bundleName in bundles)
             {
@@ -39,6 +40,17 @@ namespace UBUI
                         continue;
                     }
 
+                    // Backup the prefab so we can restore it when we're finished
+                    string backupPath = Path.Combine(BackupDirectory, assetPath);
+                    string directoryName = Path.GetDirectoryName(backupPath);
+                    if(!Directory.Exists(directoryName))
+                    {
+                        Directory.CreateDirectory(directoryName);
+                    }
+                    prefabsToRestore[backupPath] = assetPath;
+
+                    File.Copy(assetPath, backupPath, true);
+
                     using(PrefabUtility.EditPrefabContentsScope scope = new PrefabUtility.EditPrefabContentsScope(assetPath))
                     {
                         GameObject prefabRoot = scope.prefabContentsRoot;
@@ -48,7 +60,6 @@ namespace UBUI
 
                         string assetName = Path.GetFileName(assetPath).ToLower();
                         serializedComponents[assetName] = serializedPrefab;
-                        prefabsToRestore[assetPath] = serializedPrefab;
                     }
                 }
 
@@ -62,17 +73,23 @@ namespace UBUI
             // Building for StandaloneWindows because the game only has windows builds
             BuildPipeline.BuildAssetBundles(AssetBundleDirectory, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows);
 
-            // Restore the deleted components on each prefab we modified
-            foreach(KeyValuePair<string, SerializedGameObject> pair in prefabsToRestore)
+            // Restore the originals of each prefab we modified
+            foreach(KeyValuePair<string, string> pair in prefabsToRestore)
             {
-                string assetPath = pair.Key;
-                SerializedGameObject serialized = pair.Value;
+                string backupPath = pair.Key;
+                string assetPath = pair.Value;
+                File.Copy(backupPath, assetPath, true);
+            }
 
-                using(PrefabUtility.EditPrefabContentsScope scope = new PrefabUtility.EditPrefabContentsScope(assetPath))
-                {
-                    GameObject prefabRoot = scope.prefabContentsRoot;
-                    PrefabInitializer.AddMissingComponents(prefabRoot, serialized);
-                }
+            try
+            {
+                Directory.Delete(BackupDirectory, true);
+                string metaPath = BackupDirectory + ".meta";
+                File.Delete(metaPath);
+            }
+            catch
+            {
+                Debug.LogError("Failed to delete backup directory!");
             }
         }
     }
