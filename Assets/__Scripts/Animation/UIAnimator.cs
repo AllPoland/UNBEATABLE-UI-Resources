@@ -80,6 +80,12 @@ namespace UBUI.Animation
             startPos = rectTransform.anchoredPosition;
             endPos = startPos + Data.positionOffset;
 
+            rectTransform.anchoredPosition = endPos;
+            if(Data.fade && canvasGroup)
+            {
+                canvasGroup.alpha = 0f;
+            }
+
             UIStateManager.OnTransitionStart += HandleNewState;
         }
 
