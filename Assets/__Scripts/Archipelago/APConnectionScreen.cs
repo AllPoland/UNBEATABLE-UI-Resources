@@ -2,6 +2,7 @@ using System;
 using TMPro;
 using UBUI.Serialization;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace UBUI.Archipelago
 {
@@ -15,7 +16,7 @@ namespace UBUI.Archipelago
 
     public class APConnectionScreen : SerializableComponent<APConnectionScreenData>
     {
-        public event Action OnConnect;
+        [NonSerialized] public UnityEvent OnConnect = new UnityEvent();
 
 
         public APConnectionInfo GetConnectionInfo()
@@ -36,6 +37,23 @@ namespace UBUI.Archipelago
             }
 
             return info;
+        }
+
+
+        public void SetConnectionInfo(APConnectionInfo info)
+        {
+            if(Data.ipInput?.Value)
+            {
+                Data.ipInput.Value.text = info.ip;
+            }
+            if(Data.slotInput?.Value)
+            {
+                Data.slotInput.Value.text = info.slot;
+            }
+            if(Data.passInput?.Value)
+            {
+                Data.passInput.Value.text = info.pass;
+            }
         }
 
 

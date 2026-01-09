@@ -13,26 +13,47 @@ namespace UBUI.Serialization
         [HideInInspector] public string name = "";
 
 
-        public void FindValue(Transform owner)
+        public bool FindValue(Transform owner)
         {
+            if(Value)
+            {
+                // No need to search for the value again
+                return true;
+            }
+
             Transform transform = owner.Find(name);
             if(!transform)
             {
-                Value = null;
-                return;
+                // Recurse down the hierarchy until we find the object
+                foreach(Transform child in owner)
+                {
+                    if(FindValue(child))
+                    {
+                        return true;
+                    }
+                }
+                return false;
             }
+
             Value = transform.GetComponent<T>();
+            return true;
         }
 
 
-        [OnSerializing]
-        internal void PreSerialize(StreamingContext context)
+        public void UpdateName()
         {
             if(!Value)
             {
                 name = "";
             }
             else name = Value.gameObject.name;
+        }
+
+
+        [OnSerializing]
+        internal void PreSerialize(StreamingContext context)
+        {
+            UpdateName();
         }
     }
 }
