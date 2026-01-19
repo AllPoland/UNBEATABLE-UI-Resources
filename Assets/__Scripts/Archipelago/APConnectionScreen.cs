@@ -108,9 +108,9 @@ namespace UBUI.Archipelago
 
         public void Connect()
         {
-            OnConnect?.Invoke();
             Data.connectButton.Value.interactable = false;
             buttonText.text = buttonText.text = connectingText;
+            OnConnect?.Invoke();
         }
 
 
