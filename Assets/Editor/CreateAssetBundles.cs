@@ -71,7 +71,7 @@ namespace UBUI
 
             // Build the assetbundles with our removed components - we'll add them back in the plugin
             // Building for StandaloneWindows because the game only has windows builds
-            BuildPipeline.BuildAssetBundles(AssetBundleDirectory, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows);
+            BuildPipeline.BuildAssetBundles(AssetBundleDirectory, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows64);
 
             // Restore the originals of each prefab we modified
             foreach(KeyValuePair<string, string> pair in prefabsToRestore)
