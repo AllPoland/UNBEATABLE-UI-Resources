@@ -120,14 +120,13 @@ namespace UBUI.Archipelago
             else
             {
                 message = Instantiate(MessagePrefab, Data.content.Value.transform, false);
-                message.Init();
             }
+            message.gameObject.SetActive(true);
 
             message.transform.localPosition = new Vector2(0f, -currentSize);
             message.rectTransform.localScale = Vector3.one;
 
             message.SetText(text);
-            message.gameObject.SetActive(true);
 
             aliveMessages.Add(message);
             message.Show(this);
@@ -201,10 +200,15 @@ namespace UBUI.Archipelago
 
             if(string.IsNullOrEmpty(consoleIn.text))
             {
+                // Reselect the console because pressing enter deselects it
+                consoleIn.Select();
+                consoleIn.ActivateInputField();
                 return;
             }
 
             SendCommand(consoleIn.text);
+            consoleIn.Select();
+            consoleIn.ActivateInputField();
         }
 
 
@@ -219,12 +223,16 @@ namespace UBUI.Archipelago
 
             if(selectedPrevCommand >= prevCommands.Count - 1)
             {
+                consoleIn.caretPosition = consoleIn.text.Length;
                 return;
             }
 
             selectedPrevCommand++;
             int reverseIndex = prevCommands.Count - 1 - selectedPrevCommand;
-            consoleIn.SetTextWithoutNotify(prevCommands.ToArray()[reverseIndex]);
+            string command = prevCommands.ToArray()[reverseIndex];
+            consoleIn.SetTextWithoutNotify(command);
+
+            consoleIn.caretPosition = command.Length;
         }
 
 
@@ -245,7 +253,10 @@ namespace UBUI.Archipelago
 
             selectedPrevCommand--;
             int reverseIndex = prevCommands.Count - 1 - selectedPrevCommand;
-            consoleIn.SetTextWithoutNotify(prevCommands.ToArray()[reverseIndex]);
+            string command = prevCommands.ToArray()[reverseIndex];
+            consoleIn.SetTextWithoutNotify(command);
+
+            consoleIn.caretPosition = command.Length;
         }
 
 
@@ -288,6 +299,26 @@ namespace UBUI.Archipelago
         public void OnPointerExit(PointerEventData eventData)
         {
             HideScroll();
+        }
+
+
+        private void LateUpdate()
+        {
+            // Handle console inputs
+            if(Input.GetKeyDown(KeyCode.Return))
+            {
+                HandleSubmit();
+            }
+
+            if(Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                HandleUp();
+            }
+
+            if(Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                HandleDown();
+            }
         }
     }
 }
