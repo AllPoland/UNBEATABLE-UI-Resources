@@ -47,6 +47,7 @@ namespace UBUI.Serialization
             {
                 // Sometimes built-in components can 
                 Debug.Log($"{t.name} has more children than serialized ({t.childCount}, {serialized.children.Length})");
+                return;
             }
 
             for(int i = 0; i < t.childCount; i++)
