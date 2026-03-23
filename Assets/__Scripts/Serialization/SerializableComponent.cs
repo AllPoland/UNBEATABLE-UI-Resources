@@ -16,6 +16,9 @@ namespace UBUI.Serialization
 
 
         public abstract Type GetDataType();
+
+
+        public virtual void Init() {}
     }
 
     

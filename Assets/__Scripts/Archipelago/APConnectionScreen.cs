@@ -114,7 +114,7 @@ namespace UBUI.Archipelago
         }
 
 
-        public void Init()
+        public override void Init()
         {
             Transform t = transform;
             Data.ipInput.FindValue(t);

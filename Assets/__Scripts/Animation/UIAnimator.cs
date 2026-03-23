@@ -24,11 +24,11 @@ namespace UBUI.Animation
     [RequireComponent(typeof(RectTransform))]
     public class UIAnimator : SerializableComponent<UIAnimatorData>
     {
-        private RectTransform rectTransform;
+        [NonSerialized] public RectTransform rectTransform;
         private CanvasGroup canvasGroup;
 
-        private Vector2 startPos;
-        private Vector2 endPos;
+        [NonSerialized] public Vector2 startPos;
+        [NonSerialized] public Vector2 endPos;
 
 
         public void PlayAnimation()
@@ -61,6 +61,11 @@ namespace UBUI.Animation
 
         public void HandleNewState(UIState oldState, UIState newState, Dictionary<string, float> delays)
         {
+            if(Data.eventState == UIState.None)
+            {
+                return;
+            }
+
             if(oldState == Data.eventState && newState != Data.eventState)
             {
                 PlayAnimation();
@@ -72,7 +77,7 @@ namespace UBUI.Animation
         }
 
 
-        public void Init()
+        public override void Init()
         {
             rectTransform = (RectTransform)transform;
             canvasGroup = GetComponent<CanvasGroup>();
