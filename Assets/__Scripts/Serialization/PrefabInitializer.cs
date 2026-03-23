@@ -43,7 +43,7 @@ namespace UBUI.Serialization
                 newComponent.SetData(newData);
             }
 
-            if(t.childCount >= serialized.children.Length)
+            if(t.childCount > serialized.children.Length)
             {
                 // Sometimes built-in components can 
                 Debug.Log($"{t.name} has more children than serialized ({t.childCount}, {serialized.children.Length})");
