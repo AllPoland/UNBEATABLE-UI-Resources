@@ -30,7 +30,7 @@ namespace UBUI.Archipelago
 
         private Mask mask;
 
-        private Queue<string> prevCommands;
+        private List<string> prevCommands;
         private int selectedPrevCommand;
 
         private Queue<string> queuedMessages = new Queue<string>();
@@ -202,12 +202,15 @@ namespace UBUI.Archipelago
 
         public void SendCommand(string text)
         {
+            // Avoid adding duplicate commands to the list
+            prevCommands.RemoveAll(x => x == text);
+
             if (prevCommands.Count >= maxCommandMemory)
             {
-                prevCommands.Dequeue();
+                prevCommands.RemoveAt(0);
             }
 
-            prevCommands.Enqueue(text);
+            prevCommands.Add(text);
 
             ResetCommand(true);
             OnMessageSent?.Invoke(text);
@@ -326,7 +329,7 @@ namespace UBUI.Archipelago
 
             mask = Data.raycast.Value.GetComponent<Mask>();
 
-            prevCommands = new Queue<string>(maxCommandMemory);
+            prevCommands = new List<string>(maxCommandMemory);
             deadMessages = new Queue<APConsoleMessage>(maxDeadMessages);
         }
 
