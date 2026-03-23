@@ -569,7 +569,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: enter message or type /help for commands
+  m_text: enter message or type !help for commands
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: cf557b8c594aa15c29aa4ff71d69a5d3, type: 2}
   m_sharedMaterial: {fileID: -1465933197256718635, guid: cf557b8c594aa15c29aa4ff71d69a5d3, type: 2}
