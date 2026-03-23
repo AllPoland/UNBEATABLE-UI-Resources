@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7503713386832074242}
   - component: {fileID: 4524487479072629112}
-  - component: {fileID: 599474013571321214}
   - component: {fileID: 103948859692082648}
   - component: {fileID: 7927734966505872561}
   m_Layer: 5
@@ -56,38 +55,21 @@ MonoBehaviour:
     textMesh:
       Value: {fileID: 4762973362598089517}
       name: 
-    animator:
-      Value: {fileID: 599474013571321214}
-      name: 
     image:
       Value: {fileID: 0}
       name: 
     yPadding: 4
-    deadColor: {r: 0.23629934, g: 0.23629934, b: 0.23629934, a: 1}
+    aliveColor:
+      r: 0
+      g: 0
+      b: 0
+      a: 1
+    deadColor:
+      r: 0.23629934
+      g: 0.23629934
+      b: 0.23629934
+      a: 1
     lifeSpan: 5
---- !u!114 &599474013571321214
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 36878942045683730}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1801796a6b2e4f39b801edb062458155, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UBUI.Animation.UIAnimator
-  Data:
-    duration: 0.2
-    eventState: 0
-    delayMatch: 
-    delayMod: 0
-    positionOffset:
-      x: 0
-      y: 0
-    fade: 0
-    easing: 6
-    reverseEasing: 6
 --- !u!222 &103948859692082648
 CanvasRenderer:
   m_ObjectHideFlags: 0
