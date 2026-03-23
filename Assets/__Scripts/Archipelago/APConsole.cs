@@ -33,6 +33,7 @@ namespace UBUI.Archipelago
         private Queue<string> prevCommands;
         private int selectedPrevCommand;
 
+        private Queue<string> queuedMessages = new Queue<string>();
         private Queue<APConsoleMessage> deadMessages;
         private List<APConsoleMessage> aliveMessages = new List<APConsoleMessage>(20);
         private Queue<APConsoleMessage> recycleMessages = new Queue<APConsoleMessage>(10);
@@ -110,7 +111,7 @@ namespace UBUI.Archipelago
         }
 
 
-        public void ShowMessage(string text)
+        private void ShowMessage(string text)
         {
             APConsoleMessage message;
             if(recycleMessages.Count > 0)
@@ -139,6 +140,12 @@ namespace UBUI.Archipelago
                 float newPos = Mathf.Max(aliveSize - Data.viewportSize, 0f);
                 ((RectTransform)Data.content.Value.transform).anchoredPosition = new Vector2(0f, newPos);
             }
+        }
+
+
+        public void QueueMessage(string text)
+        {
+            queuedMessages.Enqueue(text);
         }
 
 
@@ -299,6 +306,17 @@ namespace UBUI.Archipelago
         public void OnPointerExit(PointerEventData eventData)
         {
             HideScroll();
+        }
+
+
+        private void Update()
+        {
+            // Display messages on the main Unity thread to avoid being smited
+            // Also only show one per frame to avoid giant lag spikes
+            if(queuedMessages.Count > 0)
+            {
+                ShowMessage(queuedMessages.Dequeue());
+            }
         }
 
 
