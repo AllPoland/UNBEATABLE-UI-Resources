@@ -216,7 +216,6 @@ namespace UBUI.Archipelago
 
             ResetCommand(true);
             OnMessageSent?.Invoke(text);
-            ShowMessage(text);
         }
 
 
