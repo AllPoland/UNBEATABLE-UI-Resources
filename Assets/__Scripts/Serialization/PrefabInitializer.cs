@@ -30,23 +30,23 @@ namespace UBUI.Serialization
         }
 
 
-        public static void AddMissingComponents(GameObject gameObject, SerializedGameObject serialized)
+        public static void AddMissingComponents(Transform t, SerializedGameObject serialized)
         {
             foreach(SerializedComponent serializedComponent in serialized.components)
             {
                 Type type = Type.GetType(serializedComponent.type);
                 Type dataType = Type.GetType(serializedComponent.dataType);
 
-                SerializableComponent newComponent = (SerializableComponent)gameObject.AddComponent(type);
+                SerializableComponent newComponent = (SerializableComponent)t.gameObject.AddComponent(type);
 
                 object newData = JsonConvert.DeserializeObject(serializedComponent.data, dataType);
                 newComponent.SetData(newData);
             }
 
-            Transform t = gameObject.transform;
+            Debug.Log($"{t.name}: {t.childCount} children, {serialized.children.Length} serialized");
             for(int i = 0; i < t.childCount; i++)
             {
-                AddMissingComponents(t.GetChild(i).gameObject, serialized.children[i]);
+                AddMissingComponents(t.GetChild(i), serialized.children[i]);
             }
         }
 
@@ -62,7 +62,7 @@ namespace UBUI.Serialization
                 return instance;
             }
 
-            AddMissingComponents(instance, serialized);
+            AddMissingComponents(instance.transform, serialized);
             return instance;
         }
     }
