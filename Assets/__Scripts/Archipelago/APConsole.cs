@@ -121,10 +121,11 @@ namespace UBUI.Archipelago
             else
             {
                 message = Instantiate(MessagePrefab, Data.content.Value.transform, false);
+                message.rectTransform = (RectTransform)message.transform;
             }
             message.gameObject.SetActive(true);
 
-            message.transform.localPosition = new Vector2(0f, -currentSize);
+            message.rectTransform.localPosition = new Vector2(0f, -currentSize);
             message.rectTransform.localScale = Vector3.one;
 
             message.SetText(text);

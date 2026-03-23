@@ -84,8 +84,6 @@ namespace UBUI.Archipelago
             Transform t = transform;
             Data.textMesh.FindValue(t);
             Data.image.FindValue(t);
-
-            rectTransform = (RectTransform)t;
         }
 
 
