@@ -35,8 +35,8 @@ namespace UBUI.Archipelago
     [Serializable]
     public class APConsoleMessageData : SerializableData
     {
-        public SerializedReference<TextMeshProUGUI> textMesh;
-        public SerializedReference<Image> image;
+        // public SerializedReference<TextMeshProUGUI> textMesh;
+        // public SerializedReference<Image> image;
         public float yPadding = 4f;
         public SerializableColor aliveColor = Color.black;
         public SerializableColor deadColor = Color.grey;
@@ -48,6 +48,8 @@ namespace UBUI.Archipelago
     public class APConsoleMessage : SerializableComponent<APConsoleMessageData>
     {
         [NonSerialized] public RectTransform rectTransform;
+        [NonSerialized] public Image image;
+        [NonSerialized] public TextMeshProUGUI textMesh;
 
         private APConsole parent;
 
@@ -58,7 +60,7 @@ namespace UBUI.Archipelago
         {
             parent = parentConsole;
             lifeTime = 0f;
-            Data.image.Value.color = Data.aliveColor;
+            image.color = Data.aliveColor;
             enabled = true;
 
             Vector2 pos = rectTransform.anchoredPosition;
@@ -70,20 +72,11 @@ namespace UBUI.Archipelago
 
         public void SetText(string text)
         {
-            TextMeshProUGUI textMesh = Data.textMesh.Value;
             textMesh.text = text;
 
             Vector2 sizeDelta = rectTransform.sizeDelta;
             sizeDelta.y = Mathf.Max(textMesh.preferredHeight + (Data.yPadding * 2f), 30f);
             rectTransform.sizeDelta = sizeDelta;
-        }
-
-
-        public override void Init()
-        {
-            Transform t = transform;
-            Data.textMesh.FindValue(t);
-            Data.image.FindValue(t);
         }
 
 
@@ -94,7 +87,7 @@ namespace UBUI.Archipelago
                 lifeTime += Time.unscaledDeltaTime;
                 if(lifeTime >= Data.lifeSpan)
                 {
-                    Data.image.Value.color = Data.deadColor;
+                    image.color = Data.deadColor;
                     parent.HideMessage(this);
                     enabled = false;
                 }
