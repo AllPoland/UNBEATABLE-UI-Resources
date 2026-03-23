@@ -15,7 +15,8 @@ namespace UBUI.Archipelago
         public SerializedReference<TMP_InputField> consoleIn;
         public SerializedReference<Image> content;
         public SerializedReference<Image> raycast;
-        public SerializedReference<UIAnimator> animator;
+        public SerializedReference<UIAnimator> maskAnimator;
+        public SerializedReference<UIAnimator> viewAnimator;
 
         [Space]
         public float viewportSize = 500f;
@@ -47,7 +48,7 @@ namespace UBUI.Archipelago
         private bool selected => hovered || EventSystem.current.currentSelectedGameObject == Data.consoleIn.Value.gameObject;
 
         private float aliveSize => totalSize - deadSize;
-        private float currentSize => hovered ? totalSize : aliveSize;
+        private float currentSize => selected ? totalSize : aliveSize;
 
 
         private void UpdatePositions()
@@ -97,7 +98,8 @@ namespace UBUI.Archipelago
             UpdatePositions();
             ((RectTransform)Data.content.Value.transform).anchoredPosition = new Vector2(0f, deadSize);
 
-            Data.animator.Value.PlayAnimationReverse();
+            Data.maskAnimator.Value.PlayAnimationReverse();
+            Data.viewAnimator.Value.PlayAnimationReverse();
         }
 
 
@@ -120,7 +122,8 @@ namespace UBUI.Archipelago
             float newPos = Mathf.Max(aliveSize - Data.viewportSize, 0f);
             ((RectTransform)Data.content.Value.transform).anchoredPosition = new Vector2(0f, newPos);
 
-            Data.animator.Value.PlayAnimation();
+            Data.maskAnimator.Value.PlayAnimation();
+            Data.viewAnimator.Value.PlayAnimation();
         }
 
 
@@ -213,6 +216,7 @@ namespace UBUI.Archipelago
 
             ResetCommand(true);
             OnMessageSent?.Invoke(text);
+            ShowMessage(text);
         }
 
 
@@ -325,9 +329,11 @@ namespace UBUI.Archipelago
             Data.consoleIn.FindValue(t);
             Data.content.FindValue(t);
             Data.raycast.FindValue(t);
-            Data.animator.FindValue(t);
+            Data.maskAnimator.FindValue(t);
+            Data.viewAnimator.FindValue(t);
 
-            Data.animator.Value.Init();
+            Data.maskAnimator.Value.Init();
+            Data.viewAnimator.Value.Init();
             mask = Data.raycast.Value.GetComponent<Mask>();
 
             prevCommands = new List<string>(maxCommandMemory);

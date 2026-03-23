@@ -1458,6 +1458,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ArchipelagoConsole
       objectReference: {fileID: 0}
+    - target: {fileID: 5263393759158350871, guid: e541eb00f9a28e9fa9e24437d3f8dbae, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 5913289697121365376, guid: e541eb00f9a28e9fa9e24437d3f8dbae, type: 3}
       propertyPath: m_Pivot.x
       value: 1
@@ -1536,6 +1540,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5913289697121365376, guid: e541eb00f9a28e9fa9e24437d3f8dbae, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6437556560904707295, guid: e541eb00f9a28e9fa9e24437d3f8dbae, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6437556560904707295, guid: e541eb00f9a28e9fa9e24437d3f8dbae, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
