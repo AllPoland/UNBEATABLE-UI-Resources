@@ -8,13 +8,38 @@ using UnityEngine.UI;
 namespace UBUI.Archipelago
 {
     [Serializable]
+    public class SerializableColor
+    {
+        public float r;
+        public float g;
+        public float b;
+        public float a;
+
+        public static implicit operator Color(SerializableColor s)
+        {
+            return new Color(s.r, s.g, s.b, s.a);
+        }
+
+        public static implicit operator SerializableColor(Color c)
+        {
+            return new SerializableColor
+            {
+                r = c.r,
+                g = c.g,
+                b = c.b,
+                a = c.a
+            };
+        }
+    }
+
+    [Serializable]
     public class APConsoleMessageData : SerializableData
     {
         public SerializedReference<TextMeshProUGUI> textMesh;
         public SerializedReference<Image> image;
         public float yPadding = 4f;
-        public Color aliveColor = Color.black;
-        public Color deadColor = Color.grey;
+        public SerializableColor aliveColor = Color.black;
+        public SerializableColor deadColor = Color.grey;
 
         [Space]
         public float lifeSpan = 5f;
