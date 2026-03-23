@@ -52,12 +52,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UBUI.Archipelago.APConsoleMessage
   Data:
-    textMesh:
-      Value: {fileID: 4762973362598089517}
-      name: 
-    image:
-      Value: {fileID: 7927734966505872561}
-      name: 
     yPadding: 4
     aliveColor:
       r: 0
@@ -65,9 +59,9 @@ MonoBehaviour:
       b: 0
       a: 1
     deadColor:
-      r: 0.23629934
-      g: 0.23629934
-      b: 0.23629934
+      r: 0.1
+      g: 0.1
+      b: 0.1
       a: 1
     lifeSpan: 5
 --- !u!222 &103948859692082648

@@ -121,6 +121,7 @@ namespace UBUI.Archipelago
             else
             {
                 message = Instantiate(MessagePrefab, Data.content.Value.transform, false);
+                message.Data = MessagePrefab.Data;
                 message.rectTransform = (RectTransform)message.transform;
                 message.image = message.GetComponent<Image>();
                 message.textMesh = message.rectTransform.GetChild(0).GetComponent<TextMeshProUGUI>();
