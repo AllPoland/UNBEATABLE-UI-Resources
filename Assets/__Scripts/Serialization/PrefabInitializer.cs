@@ -43,7 +43,12 @@ namespace UBUI.Serialization
                 newComponent.SetData(newData);
             }
 
-            Debug.Log($"{t.name}: {t.childCount} children, {serialized.children.Length} serialized");
+            if(t.childCount >= serialized.children.Length)
+            {
+                // Sometimes built-in components can 
+                Debug.Log($"{t.name} has more children than serialized ({t.childCount}, {serialized.children.Length})");
+            }
+
             for(int i = 0; i < t.childCount; i++)
             {
                 AddMissingComponents(t.GetChild(i), serialized.children[i]);
