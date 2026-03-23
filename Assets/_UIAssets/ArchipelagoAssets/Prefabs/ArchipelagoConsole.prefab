@@ -427,7 +427,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Mask
-  m_ShowMaskGraphic: 0
+  m_ShowMaskGraphic: 1
 --- !u!1 &2425800427121912746
 GameObject:
   m_ObjectHideFlags: 0
@@ -721,6 +721,9 @@ MonoBehaviour:
     raycast:
       Value: {fileID: 7698000571309346160}
       name: 
+    animator:
+      Value: {fileID: 6401177077540459270}
+      name: 
     viewportSize: 320
   MessagePrefab: {fileID: 4524487479072629112, guid: 567fcc427a7d64b68b9136b0ffbd7b0e, type: 3}
 --- !u!1 &4574149872010286608
@@ -844,6 +847,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1052368759749657236}
+  - component: {fileID: 5981001995352184632}
   m_Layer: 5
   m_Name: Notifications
   m_TagString: Untagged
@@ -871,6 +875,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -25}
   m_SizeDelta: {x: 0, y: -50}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &5981001995352184632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5536116418098717809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3312d7739989d2b4e91e6319e9a96d76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.RectMask2D
+  m_Padding: {x: 0, y: 0, z: 0, w: 0}
+  m_Softness: {x: 0, y: 0}
 --- !u!1 &6648923248013707106
 GameObject:
   m_ObjectHideFlags: 0
@@ -881,6 +899,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2913184646698524155}
   - component: {fileID: 3342181641594849351}
+  - component: {fileID: 6401177077540459270}
   m_Layer: 5
   m_Name: Scroll View
   m_TagString: Untagged
@@ -904,10 +923,10 @@ RectTransform:
   - {fileID: 2791431865957774652}
   m_Father: {fileID: 1052368759749657236}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 600, y: 320}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3342181641594849351
 MonoBehaviour:
@@ -939,6 +958,29 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6401177077540459270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6648923248013707106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1801796a6b2e4f39b801edb062458155, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UBUI.Animation.UIAnimator
+  Data:
+    duration: 0.2
+    eventState: 0
+    delayMatch: 
+    delayMod: 0
+    positionOffset:
+      x: 0
+      y: 320
+    fade: 0
+    easing: 6
+    reverseEasing: 6
 --- !u!1 &6771210261730278198
 GameObject:
   m_ObjectHideFlags: 0

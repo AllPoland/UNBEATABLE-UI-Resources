@@ -42,7 +42,18 @@ namespace UBUI.Animation
         }
 
 
-        public void PlayAnimationReverse(Dictionary<string, float> delays)
+        public void PlayAnimationReverse()
+        {
+            rectTransform.DOAnchorPos(startPos, Data.duration).SetEase(Data.reverseEasing);
+
+            if(Data.fade && canvasGroup)
+            {
+                canvasGroup.DOFade(1f, Data.duration);
+            }
+        }
+
+
+        public void PlayDelayAnimationReverse(Dictionary<string, float> delays)
         {
             if(string.IsNullOrEmpty(Data.delayMatch) || !delays.TryGetValue(Data.delayMatch, out float delay))
             {
@@ -72,7 +83,7 @@ namespace UBUI.Animation
             }
             else if(newState == Data.eventState && oldState != Data.eventState)
             {
-                PlayAnimationReverse(delays);
+                PlayDelayAnimationReverse(delays);
             }
         }
 

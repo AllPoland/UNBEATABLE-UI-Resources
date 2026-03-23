@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
-using System.Linq;
+using UBUI.Animation;
 
 namespace UBUI.Archipelago
 {
@@ -15,6 +15,7 @@ namespace UBUI.Archipelago
         public SerializedReference<TMP_InputField> consoleIn;
         public SerializedReference<Image> content;
         public SerializedReference<Image> raycast;
+        public SerializedReference<UIAnimator> animator;
 
         [Space]
         public float viewportSize = 500f;
@@ -87,9 +88,6 @@ namespace UBUI.Archipelago
             }
             showing = true;
 
-            Data.raycast.Value.raycastTarget = true;
-            mask.showMaskGraphic = true;
-
             foreach(APConsoleMessage message in deadMessages)
             {
                 message.gameObject.SetActive(true);
@@ -98,6 +96,8 @@ namespace UBUI.Archipelago
             UpdateSize();
             UpdatePositions();
             ((RectTransform)Data.content.Value.transform).anchoredPosition = new Vector2(0f, deadSize);
+
+            Data.animator.Value.PlayAnimationReverse();
         }
 
 
@@ -109,9 +109,6 @@ namespace UBUI.Archipelago
             }
             showing = false;
 
-            Data.raycast.Value.raycastTarget = false;
-            mask.showMaskGraphic = false;
-
             foreach(APConsoleMessage message in deadMessages)
             {
                 message.gameObject.SetActive(false);
@@ -122,6 +119,8 @@ namespace UBUI.Archipelago
 
             float newPos = Mathf.Max(aliveSize - Data.viewportSize, 0f);
             ((RectTransform)Data.content.Value.transform).anchoredPosition = new Vector2(0f, newPos);
+
+            Data.animator.Value.PlayAnimation();
         }
 
 
@@ -326,7 +325,9 @@ namespace UBUI.Archipelago
             Data.consoleIn.FindValue(t);
             Data.content.FindValue(t);
             Data.raycast.FindValue(t);
+            Data.animator.FindValue(t);
 
+            Data.animator.Value.Init();
             mask = Data.raycast.Value.GetComponent<Mask>();
 
             prevCommands = new List<string>(maxCommandMemory);
