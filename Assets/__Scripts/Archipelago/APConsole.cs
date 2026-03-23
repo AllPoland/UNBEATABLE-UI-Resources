@@ -39,7 +39,11 @@ namespace UBUI.Archipelago
         private Queue<APConsoleMessage> recycleMessages = new Queue<APConsoleMessage>(10);
         private float deadSize = 0f;
         private float totalSize = 0f;
+
+        private bool showing = false;
+
         private bool hovered = false;
+        private bool selected => hovered || EventSystem.current.currentSelectedGameObject == Data.consoleIn.Value.gameObject;
 
         private float aliveSize => totalSize - deadSize;
         private float currentSize => hovered ? totalSize : aliveSize;
@@ -48,7 +52,7 @@ namespace UBUI.Archipelago
         private void UpdatePositions()
         {
             float currentPos = 0f;
-            if(hovered)
+            if(selected)
             {
                 foreach(APConsoleMessage message in deadMessages)
                 {
@@ -70,13 +74,19 @@ namespace UBUI.Archipelago
         {
             RectTransform contentTransform = (RectTransform)Data.content.Value.transform;
 
-            float totalSize = hovered ? currentSize + Data.viewportSize : currentSize;
+            float totalSize = selected ? currentSize + Data.viewportSize : currentSize;
             contentTransform.sizeDelta = new Vector2(contentTransform.sizeDelta.x, totalSize);
         }
 
 
         private void ShowScroll()
         {
+            if(showing)
+            {
+                return;
+            }
+            showing = true;
+
             Data.raycast.Value.raycastTarget = true;
             mask.showMaskGraphic = true;
 
@@ -85,7 +95,6 @@ namespace UBUI.Archipelago
                 message.gameObject.SetActive(true);
             }
 
-            hovered = true;
             UpdateSize();
             UpdatePositions();
             ((RectTransform)Data.content.Value.transform).anchoredPosition = new Vector2(0f, deadSize);
@@ -94,6 +103,12 @@ namespace UBUI.Archipelago
 
         private void HideScroll()
         {
+            if(!showing)
+            {
+                return;
+            }
+            showing = false;
+
             Data.raycast.Value.raycastTarget = false;
             mask.showMaskGraphic = false;
 
@@ -102,7 +117,6 @@ namespace UBUI.Archipelago
                 message.gameObject.SetActive(false);
             }
 
-            hovered = false;
             UpdateSize();
             UpdatePositions();
 
@@ -139,7 +153,7 @@ namespace UBUI.Archipelago
             totalSize += message.rectTransform.sizeDelta.y;
             UpdateSize();
 
-            if(!hovered)
+            if(!selected)
             {
                 float newPos = Mathf.Max(aliveSize - Data.viewportSize, 0f);
                 ((RectTransform)Data.content.Value.transform).anchoredPosition = new Vector2(0f, newPos);
@@ -172,7 +186,7 @@ namespace UBUI.Archipelago
             deadMessages.Enqueue(message);
             deadSize += message.rectTransform.sizeDelta.y;
 
-            if(!hovered)
+            if(!selected)
             {
                 message.gameObject.SetActive(false);
                 UpdateSize();
@@ -220,6 +234,18 @@ namespace UBUI.Archipelago
             SendCommand(consoleIn.text);
             consoleIn.Select();
             consoleIn.ActivateInputField();
+        }
+
+
+        public void HandleEscape()
+        {
+            TMP_InputField consoleIn = Data.consoleIn.Value;
+            GameObject selected = EventSystem.current.currentSelectedGameObject;
+            if(selected == consoleIn.gameObject)
+            {
+                ResetCommand(true);
+                EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject);
+            }
         }
 
 
@@ -271,6 +297,16 @@ namespace UBUI.Archipelago
         }
 
 
+        private void HandleDeselect()
+        {
+            if(selected)
+            {
+                ShowScroll();
+            }
+            else HideScroll();
+        }
+
+
         public void ResetCommand(bool resetText)
         {
             selectedPrevCommand = -1;
@@ -303,13 +339,18 @@ namespace UBUI.Archipelago
 
         public void OnPointerEnter(PointerEventData eventData)
         {
+            hovered = true;
             ShowScroll();
         }
 
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            HideScroll();
+            hovered = false;
+            if(!selected)
+            {
+                HideScroll();
+            }
         }
 
 
@@ -321,6 +362,11 @@ namespace UBUI.Archipelago
             {
                 ShowMessage(queuedMessages.Dequeue());
             }
+
+            if(showing && !Data.consoleIn.Value.isFocused)
+            {
+                HandleDeselect();
+            }
         }
 
 
@@ -330,6 +376,11 @@ namespace UBUI.Archipelago
             if(Input.GetKeyDown(KeyCode.Return))
             {
                 HandleSubmit();
+            }
+
+            if(Input.GetKeyDown(KeyCode.Escape))
+            {
+                HandleEscape();
             }
 
             if(Input.GetKeyDown(KeyCode.UpArrow))
