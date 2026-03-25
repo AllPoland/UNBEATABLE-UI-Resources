@@ -12,6 +12,7 @@ namespace UBUI.Archipelago
     [Serializable]
     public class APConsoleData : SerializableData
     {
+        public SerializedReference<Image> inputContainer;
         public SerializedReference<TMP_InputField> consoleIn;
         public SerializedReference<Image> content;
         public SerializedReference<Image> raycast;
@@ -193,7 +194,7 @@ namespace UBUI.Archipelago
         }
 
 
-        public void SendCommand(string text)
+        private void RegisterPrevCommand(string text)
         {
             // Avoid adding duplicate commands to the list
             prevCommands.RemoveAll(x => x == text);
@@ -204,7 +205,12 @@ namespace UBUI.Archipelago
             }
 
             prevCommands.Add(text);
+        }
 
+
+        public void SendCommand(string text)
+        {
+            RegisterPrevCommand(text);
             ResetCommand(true);
             OnMessageSent?.Invoke(text);
         }
@@ -278,8 +284,15 @@ namespace UBUI.Archipelago
                 return;
             }
 
-            if(selectedPrevCommand <= 0)
+            if(selectedPrevCommand < 0)
             {
+                // This command was manually typed
+                return;
+            }
+
+            if(selectedPrevCommand == 0)
+            {
+                // We're on the first previous command, so we want to reset to blank
                 ResetCommand(true);
                 return;
             }
