@@ -62,7 +62,6 @@ namespace UBUI.Archipelago
         private int selectedPrevCommand;
 
         private List<APConsoleMessage> visibleMessages = new List<APConsoleMessage>(20);
-        private List<StoredMessage> visibleStoredMessages = new List<StoredMessage>(20);
         private Queue<APConsoleMessage> recycleMessages = new Queue<APConsoleMessage>(20);
         private float deadSize = 0f;
         private float totalSize = 0f;
@@ -85,14 +84,14 @@ namespace UBUI.Archipelago
             }
 
             float adjustedPos = currentPos + pos;
-            if(adjustedPos <= -Data.viewportSize)
+            if(adjustedPos <= -Data.viewportSize + 0.001f)
             {
                 // The message is below the viewport
                 return false;
             }
 
             float messageBottom = adjustedPos - message.size;
-            if(messageBottom >= 0f)
+            if(messageBottom >= -0.001f)
             {
                 // The message is above the viewport
                 return false;
@@ -135,7 +134,6 @@ namespace UBUI.Archipelago
                 {
                     message.gameObject.SetActive(false);
                     visibleMessages.Remove(message);
-                    visibleStoredMessages.Remove(message.storedMessage);
                     recycleMessages.Enqueue(message);
                 }
             }
@@ -149,15 +147,21 @@ namespace UBUI.Archipelago
             float messagePos = 0f;
             foreach(StoredMessage storedMessage in prevMessages)
             {
-                if(IsMessageVisible(storedMessage, messagePos) && !visibleStoredMessages.Contains(storedMessage))
+                if(IsMessageVisible(storedMessage, messagePos))
                 {
-                    APConsoleMessage message = GetMessageObject();
-                    message.rectTransform.anchoredPosition = new Vector2(0f, messagePos);
-                    message.SetText(storedMessage.text);
-                    message.storedMessage = storedMessage;
+                    bool alreadyRendered = visibleMessages.Any(x =>
+                        x.storedMessage.Equals(storedMessage)
+                        && Mathf.Approximately(x.rectTransform.anchoredPosition.y, messagePos)
+                    );
+                    if(!alreadyRendered)
+                    {
+                        APConsoleMessage message = GetMessageObject();
+                        message.rectTransform.anchoredPosition = new Vector2(0f, messagePos);
+                        message.SetText(storedMessage.text);
+                        message.storedMessage = storedMessage;
 
-                    visibleMessages.Add(message);
-                    visibleStoredMessages.Add(storedMessage);
+                        visibleMessages.Add(message);
+                    }
                 }
                 messagePos -= storedMessage.size;
             }
@@ -286,7 +290,6 @@ namespace UBUI.Archipelago
 
                 message.Show(this);
                 visibleMessages.Add(message);
-                visibleStoredMessages.Add(storedMessage);
             }
             else
             {
