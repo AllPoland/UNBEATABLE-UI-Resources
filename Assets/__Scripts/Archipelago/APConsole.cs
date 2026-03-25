@@ -54,6 +54,8 @@ namespace UBUI.Archipelago
         [NonSerialized] public int maxMessageMemory = 300;
         [NonSerialized] public int maxCommandMemory = 10;
 
+        [NonSerialized] public bool Paused = false;
+
         private List<StoredMessage> aliveMessages = new List<StoredMessage>(20);
         private Queue<StoredMessage> prevMessages;
         private Queue<string> queuedMessages = new Queue<string>();
@@ -532,6 +534,11 @@ namespace UBUI.Archipelago
 
         private void Update()
         {
+            if(Paused)
+            {
+                return;
+            }
+
             // Display messages on the main Unity thread to avoid being smited
             // Also only show one per frame to avoid giant lag spikes
             if(queuedMessages.Count > 0)
@@ -548,6 +555,11 @@ namespace UBUI.Archipelago
 
         private void LateUpdate()
         {
+            if(Paused)
+            {
+                return;
+            }
+
             // Handle console inputs
             if(Input.GetKeyDown(KeyCode.Return))
             {
