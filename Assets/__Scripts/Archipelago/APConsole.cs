@@ -499,6 +499,7 @@ namespace UBUI.Archipelago
             prevCommands = new List<string>(maxCommandMemory);
             prevMessages = new Queue<StoredMessage>(maxMessageMemory);
 
+            Data.raycast.Value.raycastTarget = false;
             Data.scrollBar.Value.onValueChanged.AddListener(UpdateScrollbarPosition);
         }
 
