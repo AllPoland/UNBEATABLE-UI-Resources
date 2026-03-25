@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 using UBUI.Animation;
+using DG.Tweening;
 
 namespace UBUI.Archipelago
 {
@@ -18,8 +19,11 @@ namespace UBUI.Archipelago
         public SerializedReference<Image> raycast;
         public SerializedReference<UIAnimator> maskAnimator;
         public SerializedReference<UIAnimator> viewAnimator;
+        public SerializedReference<RectMask2D> viewportMask;
 
         [Space]
+        public float openSize = 600f;
+        public float closedSize = 75;
         public float viewportSize = 500f;
     }
 
@@ -46,7 +50,7 @@ namespace UBUI.Archipelago
         private bool hovered = false;
         private bool selected => hovered || EventSystem.current.currentSelectedGameObject == Data.consoleIn.Value.gameObject;
 
-        private float aliveSize => totalSize - deadSize;
+        private Tweener scrollbarMaskAnimation;
 
 
         private void UpdatePositions()
@@ -83,6 +87,26 @@ namespace UBUI.Archipelago
         }
 
 
+        private void UpdateInputSize(bool delayOnClose)
+        {
+            bool shouldOpen = selected || aliveMessages.Count > 0;
+            float size = shouldOpen ? Data.openSize : Data.closedSize;
+            Vector2 newInputSize = new Vector2(size, Data.inputContainer.Value.rectTransform.sizeDelta.y);
+
+            float delay;
+            if(shouldOpen)
+            {
+                delay = 0f;
+            }
+            else delay = delayOnClose ? 0.15f : 0f;
+
+            Data.inputContainer.Value.rectTransform.DOKill();
+            Data.inputContainer.Value.rectTransform.DOSizeDelta(newInputSize, 0.1f)
+                .SetEase(Ease.OutQuad)
+                .SetDelay(delay);
+        }
+
+
         private void ShowScroll()
         {
             if(showing)
@@ -100,8 +124,14 @@ namespace UBUI.Archipelago
 
             UpdatePositions();
 
-            Data.maskAnimator.Value.PlayAnimationReverse();
-            Data.viewAnimator.Value.PlayAnimationReverse();
+            UpdateInputSize(true);
+            Data.maskAnimator.Value.PlayAnimationReverse(0.1f);
+            Data.viewAnimator.Value.PlayAnimationReverse(0.1f);
+
+            // Animate the mask which reveals the scrollbar
+            scrollbarMaskAnimation?.Kill();
+            scrollbarMaskAnimation = DOVirtual.Float(-20f, 0f, 0.05f, (f) => Data.viewportMask.Value.padding = new Vector4(0f, 0f, f, 0f))
+                .SetDelay(0.1f);
         }
 
 
@@ -122,8 +152,14 @@ namespace UBUI.Archipelago
 
             UpdatePositions();
 
+            UpdateInputSize(true);
             Data.maskAnimator.Value.PlayAnimation();
             Data.viewAnimator.Value.PlayAnimation();
+
+            // Animate the mask which reveals the scrollbar, to hide it
+            scrollbarMaskAnimation?.Kill();
+            scrollbarMaskAnimation = DOVirtual.Float(0f, -20f, 0.05f, (f) => Data.viewportMask.Value.padding = new Vector4(0f, 0f, f, 0f))
+                .SetDelay(0.1f);
         }
 
 
@@ -153,6 +189,7 @@ namespace UBUI.Archipelago
 
             totalSize += message.rectTransform.sizeDelta.y;
             UpdateSize();
+            UpdateInputSize(false);
 
             if(!selected)
             {
@@ -186,6 +223,7 @@ namespace UBUI.Archipelago
 
             deadMessages.Enqueue(message);
             deadSize += message.rectTransform.sizeDelta.y;
+            UpdateInputSize(false);
 
             if(!selected || clearDead)
             {
@@ -346,11 +384,13 @@ namespace UBUI.Archipelago
         public override void Init()
         {
             Transform t = transform;
+            Data.inputContainer.FindValue(t);
             Data.consoleIn.FindValue(t);
             Data.content.FindValue(t);
             Data.raycast.FindValue(t);
             Data.maskAnimator.FindValue(t);
             Data.viewAnimator.FindValue(t);
+            Data.viewportMask.FindValue(t);
 
             Data.maskAnimator.Value.Init();
             Data.viewAnimator.Value.Init();

@@ -31,9 +31,10 @@ namespace UBUI.Animation
         [NonSerialized] public Vector2 endPos;
 
 
-        public void PlayAnimation()
+        public void PlayAnimation(float delay = 0f)
         {
-            rectTransform.DOAnchorPos(endPos, Data.duration).SetEase(Data.easing);
+            rectTransform.DOKill();
+            rectTransform.DOAnchorPos(endPos, Data.duration).SetEase(Data.easing).SetDelay(delay);
 
             if(Data.fade && canvasGroup)
             {
@@ -42,9 +43,10 @@ namespace UBUI.Animation
         }
 
 
-        public void PlayAnimationReverse()
+        public void PlayAnimationReverse(float delay = 0f)
         {
-            rectTransform.DOAnchorPos(startPos, Data.duration).SetEase(Data.reverseEasing);
+            rectTransform.DOKill();
+            rectTransform.DOAnchorPos(startPos, Data.duration).SetEase(Data.reverseEasing).SetDelay(delay);
 
             if(Data.fade && canvasGroup)
             {
@@ -61,6 +63,7 @@ namespace UBUI.Animation
             }
             delay += Data.delayMod;
 
+            rectTransform.DOKill();
             rectTransform.DOAnchorPos(startPos, Data.duration).SetEase(Data.reverseEasing).SetDelay(delay);
 
             if(Data.fade && canvasGroup)
