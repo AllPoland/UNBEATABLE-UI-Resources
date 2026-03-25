@@ -186,21 +186,19 @@ namespace UBUI.Archipelago
         }
 
 
-        private void SetContentPosition()
+        private void SetContentPosition(bool updateMessages = true)
         {
-            if(selected)
-            {
-                float newPos = Mathf.Max(deadSize, totalSize - Data.viewportSize);
-                ((RectTransform)Data.content.Value.transform).anchoredPosition = new Vector2(0f, newPos);
-                currentPos = newPos;
-            }
-            else
-            {
-                ((RectTransform)Data.content.Value.transform).anchoredPosition = new Vector2(0f, deadSize);
-                currentPos = deadSize;
-            }
+            float newPos = Mathf.Max(deadSize, totalSize - Data.viewportSize);
+            ((RectTransform)Data.content.Value.transform).anchoredPosition = new Vector2(0f, newPos);
+            currentPos = newPos;
 
-            UpdateMessages();
+            // ((RectTransform)Data.content.Value.transform).anchoredPosition = new Vector2(0f, deadSize);
+            // currentPos = deadSize;
+
+            if(updateMessages)
+            {
+                UpdateMessages();
+            }
         }
 
 
@@ -295,16 +293,19 @@ namespace UBUI.Archipelago
             aliveMessages.Add(storedMessage);
             prevMessages.Enqueue(storedMessage);
 
+            float messagePos = totalSize;
+            totalSize += messageSize;
+            UpdateSize();
+
             if(!selected)
             {
-                float newPos = Mathf.Max(totalSize - Data.viewportSize, 0f);
-                ((RectTransform)Data.content.Value.transform).anchoredPosition = new Vector2(0f, newPos);
+                SetContentPosition(false);
             }
 
-            if(IsMessageVisible(storedMessage, totalSize))
+            if(IsMessageVisible(storedMessage, messagePos))
             {
                 message.storedMessage = storedMessage;
-                message.rectTransform.localPosition = new Vector2(0f, -totalSize);
+                message.rectTransform.localPosition = new Vector2(0f, -(totalSize - messageSize));
 
                 message.Show(this);
                 visibleMessages.Add(message);
@@ -315,8 +316,6 @@ namespace UBUI.Archipelago
                 recycleMessages.Enqueue(message);
             }
 
-            totalSize += messageSize;
-            UpdateSize();
             UpdateInputSize(false);
         }
 

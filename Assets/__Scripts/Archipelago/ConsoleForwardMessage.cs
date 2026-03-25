@@ -6,7 +6,7 @@ public class ConsoleForwardMessage : MonoBehaviour
     private APConsole console;
 
 
-    private void HandleMessageSend(string message)
+    public void HandleMessageSend(string message)
     {
         console.QueueMessage(message);
     }
