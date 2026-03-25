@@ -302,6 +302,23 @@ namespace UBUI.Archipelago
         }
 
 
+        public void HandleTilde()
+        {
+            TMP_InputField consoleIn = Data.consoleIn.Value;
+            GameObject selected = EventSystem.current.currentSelectedGameObject;
+            if(selected == consoleIn.gameObject)
+            {
+                return;
+            }
+
+            consoleIn.Select();
+            consoleIn.ActivateInputField();
+            consoleIn.caretPosition = consoleIn.text.Length;
+
+            ShowScroll();
+        }
+
+
         private void HandleDeselect()
         {
             if(selected)
@@ -400,6 +417,11 @@ namespace UBUI.Archipelago
             if(Input.GetKeyDown(KeyCode.DownArrow))
             {
                 HandleDown();
+            }
+
+            if(Input.GetKeyDown(KeyCode.BackQuote))
+            {
+                HandleTilde();
             }
         }
     }
