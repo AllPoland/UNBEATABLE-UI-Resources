@@ -46,6 +46,7 @@ namespace UBUI.Archipelago
     {
         [NonSerialized] public RectTransform rectTransform;
         [NonSerialized] public TextMeshProUGUI textMesh;
+        [NonSerialized] public StoredMessage storedMessage;
 
         private APConsole parent;
 

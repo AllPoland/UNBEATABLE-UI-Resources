@@ -851,6 +851,9 @@ MonoBehaviour:
     viewportMask:
       Value: {fileID: 7607536827595353220}
       name: 
+    scrollBar:
+      Value: {fileID: 336710721291248668}
+      name: 
     openSize: 620
     closedSize: 65
     viewportSize: 320

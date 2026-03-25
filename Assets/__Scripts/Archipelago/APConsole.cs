@@ -7,9 +7,27 @@ using UnityEngine.UI;
 using TMPro;
 using UBUI.Animation;
 using DG.Tweening;
+using System.Linq;
 
 namespace UBUI.Archipelago
 {
+    public struct StoredMessage : IEquatable<StoredMessage>
+    {
+        public string text;
+        public float size;
+
+        public StoredMessage(string text, float size)
+        {
+            this.text = text;
+            this.size = size;
+        }
+
+        public bool Equals(StoredMessage b)
+        {
+            return b.size == size && b.text == text;
+        }
+    }
+
     [Serializable]
     public class APConsoleData : SerializableData
     {
@@ -20,6 +38,7 @@ namespace UBUI.Archipelago
         public SerializedReference<UIAnimator> maskAnimator;
         public SerializedReference<UIAnimator> viewAnimator;
         public SerializedReference<RectMask2D> viewportMask;
+        public SerializedReference<Scrollbar> scrollBar;
 
         [Space]
         public float openSize = 600f;
@@ -32,18 +51,22 @@ namespace UBUI.Archipelago
         public event Action<string> OnMessageSent;
 
         public APConsoleMessage MessagePrefab;
+        [NonSerialized] public int maxMessageMemory = 300;
         [NonSerialized] public int maxCommandMemory = 10;
-        [NonSerialized] public int maxDeadMessages = 300;
+
+        private List<StoredMessage> aliveMessages = new List<StoredMessage>(20);
+        private Queue<StoredMessage> prevMessages;
+        private Queue<string> queuedMessages = new Queue<string>();
 
         private List<string> prevCommands;
         private int selectedPrevCommand;
 
-        private Queue<string> queuedMessages = new Queue<string>();
-        private Queue<APConsoleMessage> deadMessages;
-        private List<APConsoleMessage> aliveMessages = new List<APConsoleMessage>(20);
-        private Queue<APConsoleMessage> recycleMessages = new Queue<APConsoleMessage>(10);
+        private List<APConsoleMessage> visibleMessages = new List<APConsoleMessage>(20);
+        private List<StoredMessage> visibleStoredMessages = new List<StoredMessage>(20);
+        private Queue<APConsoleMessage> recycleMessages = new Queue<APConsoleMessage>(20);
         private float deadSize = 0f;
         private float totalSize = 0f;
+        private float currentPos = 0f;
 
         private bool showing = false;
 
@@ -53,28 +76,109 @@ namespace UBUI.Archipelago
         private Tweener scrollbarMaskAnimation;
 
 
-        private void UpdatePositions()
+        private bool IsMessageVisible(StoredMessage message, float pos)
         {
-            float currentPos = 0f;
-            foreach(APConsoleMessage message in deadMessages)
+            // Never deactivate alive messages (so their timer keeps working)
+            if(aliveMessages.Contains(message))
             {
-                message.rectTransform.anchoredPosition = new Vector2(message.rectTransform.anchoredPosition.x, currentPos);
-                message.gameObject.SetActive(selected);
-                currentPos -= message.rectTransform.sizeDelta.y;
+                return true;
             }
 
-            foreach(APConsoleMessage message in aliveMessages)
+            float adjustedPos = currentPos + pos;
+            if(adjustedPos <= -Data.viewportSize)
             {
-                message.rectTransform.anchoredPosition = new Vector2(message.rectTransform.anchoredPosition.x, currentPos);
-                currentPos -= message.rectTransform.sizeDelta.y;
+                // The message is below the viewport
+                return false;
             }
 
+            float messageBottom = adjustedPos - message.size;
+            if(messageBottom >= 0f)
+            {
+                // The message is above the viewport
+                return false;
+            }
+
+            return true;
+        }
+
+
+        private APConsoleMessage GetMessageObject()
+        {
+            APConsoleMessage message;
+            if(recycleMessages.Count > 0)
+            {
+                message = recycleMessages.Dequeue();
+            }
+            else
+            {
+                message = Instantiate(MessagePrefab, Data.content.Value.transform, false);
+                message.Data = MessagePrefab.Data;
+                message.rectTransform = (RectTransform)message.transform;
+                message.textMesh = message.rectTransform.GetChild(0).GetComponent<TextMeshProUGUI>();
+
+                message.rectTransform.localScale = Vector3.one;
+                message.rectTransform.anchoredPosition = Vector2.zero;
+                message.enabled = false;
+            }
+            message.gameObject.SetActive(true);
+
+            return message;
+        }
+
+
+        private void ClearOutsideMessages()
+        {
+            for(int i = visibleMessages.Count - 1; i >= 0; i--)
+            {
+                APConsoleMessage message = visibleMessages[i];
+                if(!IsMessageVisible(message.storedMessage, message.rectTransform.anchoredPosition.y))
+                {
+                    message.gameObject.SetActive(false);
+                    visibleMessages.Remove(message);
+                    visibleStoredMessages.Remove(message.storedMessage);
+                    recycleMessages.Enqueue(message);
+                }
+            }
+        }
+
+
+        private void UpdateMessages()
+        {
+            ClearOutsideMessages();
+
+            float messagePos = 0f;
+            foreach(StoredMessage storedMessage in prevMessages)
+            {
+                if(IsMessageVisible(storedMessage, messagePos) && !visibleStoredMessages.Contains(storedMessage))
+                {
+                    APConsoleMessage message = GetMessageObject();
+                    message.rectTransform.anchoredPosition = new Vector2(0f, messagePos);
+                    message.SetText(storedMessage.text);
+                    message.storedMessage = storedMessage;
+
+                    visibleMessages.Add(message);
+                    visibleStoredMessages.Add(storedMessage);
+                }
+                messagePos -= storedMessage.size;
+            }
+        }
+
+
+        private void SetContentPosition()
+        {
             if(selected)
             {
                 float newPos = Mathf.Max(deadSize, totalSize - Data.viewportSize);
                 ((RectTransform)Data.content.Value.transform).anchoredPosition = new Vector2(0f, newPos);
+                currentPos = newPos;
             }
-            else ((RectTransform)Data.content.Value.transform).anchoredPosition = new Vector2(0f, deadSize);
+            else
+            {
+                ((RectTransform)Data.content.Value.transform).anchoredPosition = new Vector2(0f, deadSize);
+                currentPos = deadSize;
+            }
+
+            UpdateMessages();
         }
 
 
@@ -115,14 +219,9 @@ namespace UBUI.Archipelago
             }
             showing = true;
 
-            foreach(APConsoleMessage message in deadMessages)
-            {
-                message.gameObject.SetActive(true);
-            }
-
             Data.raycast.Value.raycastTarget = true;
 
-            UpdatePositions();
+            SetContentPosition();
 
             UpdateInputSize(true);
             Data.maskAnimator.Value.PlayAnimationReverse(0.1f);
@@ -143,14 +242,9 @@ namespace UBUI.Archipelago
             }
             showing = false;
 
-            foreach(APConsoleMessage message in deadMessages)
-            {
-                message.gameObject.SetActive(false);
-            }
-
             Data.raycast.Value.raycastTarget = false;
 
-            UpdatePositions();
+            SetContentPosition();
 
             UpdateInputSize(true);
             Data.maskAnimator.Value.PlayAnimation();
@@ -165,37 +259,44 @@ namespace UBUI.Archipelago
 
         private void ShowMessage(string text)
         {
-            APConsoleMessage message;
-            if(recycleMessages.Count > 0)
+            if(prevMessages.Count >= maxMessageMemory)
             {
-                message = recycleMessages.Dequeue();
+                StoredMessage yeetMessage = prevMessages.Dequeue();
+                totalSize -= yeetMessage.size;
             }
-            else
-            {
-                message = Instantiate(MessagePrefab, Data.content.Value.transform, false);
-                message.Data = MessagePrefab.Data;
-                message.rectTransform = (RectTransform)message.transform;
-                message.textMesh = message.rectTransform.GetChild(0).GetComponent<TextMeshProUGUI>();
-            }
-            message.gameObject.SetActive(true);
 
-            message.rectTransform.localPosition = new Vector2(0f, -totalSize);
-            message.rectTransform.localScale = Vector3.one;
-
+            APConsoleMessage message = GetMessageObject();
             message.SetText(text);
 
-            aliveMessages.Add(message);
-            message.Show(this);
-
-            totalSize += message.rectTransform.sizeDelta.y;
-            UpdateSize();
-            UpdateInputSize(false);
+            float messageSize = message.rectTransform.sizeDelta.y;
+            StoredMessage storedMessage = new StoredMessage(text, messageSize);
+            aliveMessages.Add(storedMessage);
+            prevMessages.Enqueue(storedMessage);
 
             if(!selected)
             {
                 float newPos = Mathf.Max(totalSize - Data.viewportSize, 0f);
                 ((RectTransform)Data.content.Value.transform).anchoredPosition = new Vector2(0f, newPos);
             }
+
+            if(IsMessageVisible(storedMessage, totalSize))
+            {
+                message.storedMessage = storedMessage;
+                message.rectTransform.localPosition = new Vector2(0f, -totalSize);
+
+                message.Show(this);
+                visibleMessages.Add(message);
+                visibleStoredMessages.Add(storedMessage);
+            }
+            else
+            {
+                message.gameObject.SetActive(false);
+                recycleMessages.Enqueue(message);
+            }
+
+            totalSize += messageSize;
+            UpdateSize();
+            UpdateInputSize(false);
         }
 
 
@@ -207,28 +308,15 @@ namespace UBUI.Archipelago
 
         public void HideMessage(APConsoleMessage message)
         {
-            aliveMessages.Remove(message);
-
-            bool clearDead = deadMessages.Count >= maxDeadMessages;
-            if(clearDead)
-            {
-                APConsoleMessage recycle = deadMessages.Dequeue();
-                float size = recycle.rectTransform.sizeDelta.y;
-                totalSize -= size;
-                deadSize -= size;
-
-                recycle.gameObject.SetActive(false);
-                recycleMessages.Enqueue(recycle);
-            }
-
-            deadMessages.Enqueue(message);
-            deadSize += message.rectTransform.sizeDelta.y;
+            aliveMessages.Remove(message.storedMessage);
+            deadSize += message.storedMessage.size;
             UpdateInputSize(false);
 
-            if(!selected || clearDead)
+            if(!selected)
             {
-                UpdatePositions();
+                SetContentPosition();
             }
+            else UpdateMessages();
         }
 
 
@@ -381,6 +469,18 @@ namespace UBUI.Archipelago
         }
 
 
+        private void UpdateScrollbarPosition(float position)
+        {
+            if(!selected)
+            {
+                return;
+            }
+
+            currentPos = ((RectTransform)Data.content.Value.transform).anchoredPosition.y;
+            UpdateMessages();
+        }
+
+
         public override void Init()
         {
             Transform t = transform;
@@ -391,12 +491,15 @@ namespace UBUI.Archipelago
             Data.maskAnimator.FindValue(t);
             Data.viewAnimator.FindValue(t);
             Data.viewportMask.FindValue(t);
+            Data.scrollBar.FindValue(t);
 
             Data.maskAnimator.Value.Init();
             Data.viewAnimator.Value.Init();
 
             prevCommands = new List<string>(maxCommandMemory);
-            deadMessages = new Queue<APConsoleMessage>(maxDeadMessages);
+            prevMessages = new Queue<StoredMessage>(maxMessageMemory);
+
+            Data.scrollBar.Value.onValueChanged.AddListener(UpdateScrollbarPosition);
         }
 
         
