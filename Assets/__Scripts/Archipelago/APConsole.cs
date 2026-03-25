@@ -54,23 +54,7 @@ namespace UBUI.Archipelago
         [NonSerialized] public int maxMessageMemory = 300;
         [NonSerialized] public int maxCommandMemory = 10;
 
-        private bool _paused = false;
-        public bool Paused
-        {
-            get => _paused;
-            set
-            {
-                _paused = value;
-                TMP_InputField consoleIn = Data.consoleIn.Value;
-                GameObject selected = EventSystem.current.currentSelectedGameObject;
-                if(selected == consoleIn.gameObject)
-                {
-                    ResetCommand(true);
-                    EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject);
-                }
-                HandleDeselect();
-            }
-        }
+        [NonSerialized] public bool Paused = false;
 
         private List<StoredMessage> aliveMessages = new List<StoredMessage>(20);
         private Queue<StoredMessage> prevMessages;
