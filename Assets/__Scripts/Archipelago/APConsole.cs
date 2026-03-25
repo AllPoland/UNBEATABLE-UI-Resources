@@ -30,8 +30,6 @@ namespace UBUI.Archipelago
         [NonSerialized] public int maxCommandMemory = 10;
         [NonSerialized] public int maxDeadMessages = 300;
 
-        private Mask mask;
-
         private List<string> prevCommands;
         private int selectedPrevCommand;
 
@@ -48,20 +46,16 @@ namespace UBUI.Archipelago
         private bool selected => hovered || EventSystem.current.currentSelectedGameObject == Data.consoleIn.Value.gameObject;
 
         private float aliveSize => totalSize - deadSize;
-        private float currentSize => selected ? totalSize : aliveSize;
 
 
         private void UpdatePositions()
         {
             float currentPos = 0f;
-            if(selected)
+            foreach(APConsoleMessage message in deadMessages)
             {
-                foreach(APConsoleMessage message in deadMessages)
-                {
-                    message.rectTransform.anchoredPosition = new Vector2(message.rectTransform.anchoredPosition.x, currentPos);
-                    message.gameObject.SetActive(true);
-                    currentPos -= message.rectTransform.sizeDelta.y;
-                }
+                message.rectTransform.anchoredPosition = new Vector2(message.rectTransform.anchoredPosition.x, currentPos);
+                message.gameObject.SetActive(selected);
+                currentPos -= message.rectTransform.sizeDelta.y;
             }
 
             foreach(APConsoleMessage message in aliveMessages)
@@ -69,6 +63,13 @@ namespace UBUI.Archipelago
                 message.rectTransform.anchoredPosition = new Vector2(message.rectTransform.anchoredPosition.x, currentPos);
                 currentPos -= message.rectTransform.sizeDelta.y;
             }
+
+            if(selected)
+            {
+                float newPos = Mathf.Max(deadSize, totalSize - Data.viewportSize);
+                ((RectTransform)Data.content.Value.transform).anchoredPosition = new Vector2(0f, newPos);
+            }
+            else ((RectTransform)Data.content.Value.transform).anchoredPosition = new Vector2(0f, deadSize);
         }
 
 
@@ -76,8 +77,8 @@ namespace UBUI.Archipelago
         {
             RectTransform contentTransform = (RectTransform)Data.content.Value.transform;
 
-            float totalSize = selected ? currentSize + Data.viewportSize : currentSize;
-            contentTransform.sizeDelta = new Vector2(contentTransform.sizeDelta.x, totalSize);
+            float newSize = totalSize + Data.viewportSize;
+            contentTransform.sizeDelta = new Vector2(contentTransform.sizeDelta.x, newSize);
         }
 
 
@@ -94,9 +95,9 @@ namespace UBUI.Archipelago
                 message.gameObject.SetActive(true);
             }
 
-            UpdateSize();
+            Data.raycast.Value.raycastTarget = true;
+
             UpdatePositions();
-            ((RectTransform)Data.content.Value.transform).anchoredPosition = new Vector2(0f, deadSize);
 
             Data.maskAnimator.Value.PlayAnimationReverse();
             Data.viewAnimator.Value.PlayAnimationReverse();
@@ -116,11 +117,9 @@ namespace UBUI.Archipelago
                 message.gameObject.SetActive(false);
             }
 
-            UpdateSize();
-            UpdatePositions();
+            Data.raycast.Value.raycastTarget = false;
 
-            float newPos = Mathf.Max(aliveSize - Data.viewportSize, 0f);
-            ((RectTransform)Data.content.Value.transform).anchoredPosition = new Vector2(0f, newPos);
+            UpdatePositions();
 
             Data.maskAnimator.Value.PlayAnimation();
             Data.viewAnimator.Value.PlayAnimation();
@@ -139,12 +138,11 @@ namespace UBUI.Archipelago
                 message = Instantiate(MessagePrefab, Data.content.Value.transform, false);
                 message.Data = MessagePrefab.Data;
                 message.rectTransform = (RectTransform)message.transform;
-                message.image = message.GetComponent<Image>();
                 message.textMesh = message.rectTransform.GetChild(0).GetComponent<TextMeshProUGUI>();
             }
             message.gameObject.SetActive(true);
 
-            message.rectTransform.localPosition = new Vector2(0f, -currentSize);
+            message.rectTransform.localPosition = new Vector2(0f, -totalSize);
             message.rectTransform.localScale = Vector3.one;
 
             message.SetText(text);
@@ -157,7 +155,7 @@ namespace UBUI.Archipelago
 
             if(!selected)
             {
-                float newPos = Mathf.Max(aliveSize - Data.viewportSize, 0f);
+                float newPos = Mathf.Max(totalSize - Data.viewportSize, 0f);
                 ((RectTransform)Data.content.Value.transform).anchoredPosition = new Vector2(0f, newPos);
             }
         }
@@ -188,15 +186,8 @@ namespace UBUI.Archipelago
             deadMessages.Enqueue(message);
             deadSize += message.rectTransform.sizeDelta.y;
 
-            if(!selected)
+            if(!selected || clearDead)
             {
-                message.gameObject.SetActive(false);
-                UpdateSize();
-                UpdatePositions();
-            }
-            else if(clearDead)
-            {
-                UpdateSize();
                 UpdatePositions();
             }
         }
@@ -350,7 +341,6 @@ namespace UBUI.Archipelago
 
             Data.maskAnimator.Value.Init();
             Data.viewAnimator.Value.Init();
-            mask = Data.raycast.Value.GetComponent<Mask>();
 
             prevCommands = new List<string>(maxCommandMemory);
             deadMessages = new Queue<APConsoleMessage>(maxDeadMessages);

@@ -3,7 +3,6 @@ using DG.Tweening;
 using TMPro;
 using UBUI.Serialization;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace UBUI.Archipelago
 {
@@ -38,8 +37,6 @@ namespace UBUI.Archipelago
         // public SerializedReference<TextMeshProUGUI> textMesh;
         // public SerializedReference<Image> image;
         public float yPadding = 4f;
-        public SerializableColor aliveColor = Color.black;
-        public SerializableColor deadColor = Color.grey;
 
         [Space]
         public float lifeSpan = 5f;
@@ -48,7 +45,6 @@ namespace UBUI.Archipelago
     public class APConsoleMessage : SerializableComponent<APConsoleMessageData>
     {
         [NonSerialized] public RectTransform rectTransform;
-        [NonSerialized] public Image image;
         [NonSerialized] public TextMeshProUGUI textMesh;
 
         private APConsole parent;
@@ -60,13 +56,12 @@ namespace UBUI.Archipelago
         {
             parent = parentConsole;
             lifeTime = 0f;
-            image.color = Data.aliveColor;
             enabled = true;
 
             Vector2 pos = rectTransform.anchoredPosition;
             rectTransform.anchoredPosition = new Vector2(rectTransform.sizeDelta.x, pos.y);
 
-            rectTransform.DOAnchorPosX(0f, 0.25f).SetEase(Ease.OutQuad);
+            rectTransform.DOAnchorPosX(0f, 0.2f).SetEase(Ease.OutQuad);
         }
 
 
@@ -87,7 +82,6 @@ namespace UBUI.Archipelago
                 lifeTime += Time.unscaledDeltaTime;
                 if(lifeTime >= Data.lifeSpan)
                 {
-                    image.color = Data.deadColor;
                     parent.HideMessage(this);
                     enabled = false;
                 }
