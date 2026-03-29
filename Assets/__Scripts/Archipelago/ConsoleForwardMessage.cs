@@ -16,5 +16,7 @@ public class ConsoleForwardMessage : MonoBehaviour
     {
         console = transform.parent.GetComponentInChildren<APConsole>();
         console.OnMessageSent += HandleMessageSend;
+
+        console.Init();
     }
 }

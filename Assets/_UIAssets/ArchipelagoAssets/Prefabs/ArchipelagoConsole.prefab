@@ -855,7 +855,7 @@ MonoBehaviour:
       Value: {fileID: 336710721291248668}
       name: 
     openSize: 620
-    closedSize: 65
+    closedSize: 60
     viewportSize: 320
   MessagePrefab: {fileID: 4524487479072629112, guid: 567fcc427a7d64b68b9136b0ffbd7b0e, type: 3}
 --- !u!1 &3820463396902606405
@@ -970,7 +970,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 20, y: 0}
-  m_SizeDelta: {x: 65, y: 50}
+  m_SizeDelta: {x: 60, y: 50}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &2127037253550745194
 CanvasRenderer:

@@ -51,7 +51,7 @@ namespace UBUI.Archipelago
         public event Action<string> OnMessageSent;
 
         public APConsoleMessage MessagePrefab;
-        [NonSerialized] public int maxMessageMemory = 300;
+        [NonSerialized] public int maxMessageMemory = 5;
         [NonSerialized] public int maxCommandMemory = 10;
 
         [NonSerialized] public bool Paused = false;
@@ -86,14 +86,14 @@ namespace UBUI.Archipelago
             }
 
             float adjustedPos = currentPos + pos;
-            if(adjustedPos <= -Data.viewportSize + 0.001f)
+            if(adjustedPos <= -Data.viewportSize + 0.002f)
             {
                 // The message is below the viewport
                 return false;
             }
 
             float messageBottom = adjustedPos - message.size;
-            if(messageBottom >= -0.001f)
+            if(messageBottom >= -0.002f)
             {
                 // The message is above the viewport
                 return false;
@@ -124,6 +124,27 @@ namespace UBUI.Archipelago
             message.gameObject.SetActive(true);
 
             return message;
+        }
+
+
+        private void ShiftMessages(float distance)
+        {
+            for(int i = visibleMessages.Count - 1; i >= 0; i--)
+            {
+                APConsoleMessage message = visibleMessages[i];
+
+                Vector2 pos = message.rectTransform.anchoredPosition;
+                pos.y += distance;
+
+                if(!message.enabled && !IsMessageVisible(message.storedMessage, pos.y))
+                {
+                    // The message has moved outside of our view and should be removed
+                    message.gameObject.SetActive(false);
+                    visibleMessages.Remove(message);
+                    recycleMessages.Enqueue(message);
+                }
+                else message.rectTransform.anchoredPosition = pos;
+            }
         }
 
 
@@ -170,7 +191,7 @@ namespace UBUI.Archipelago
         }
 
 
-        private void SetContentPosition(bool updateMessages = true)
+        private void ResetContentPosition()
         {
             float newPos = Mathf.Max(deadSize, totalSize - Data.viewportSize);
             ((RectTransform)Data.content.Value.transform).anchoredPosition = new Vector2(0f, newPos);
@@ -179,10 +200,7 @@ namespace UBUI.Archipelago
             // ((RectTransform)Data.content.Value.transform).anchoredPosition = new Vector2(0f, deadSize);
             // currentPos = deadSize;
 
-            if(updateMessages)
-            {
-                UpdateMessages();
-            }
+            UpdateMessages();
         }
 
 
@@ -225,7 +243,7 @@ namespace UBUI.Archipelago
 
             Data.raycast.Value.raycastTarget = true;
 
-            SetContentPosition();
+            ResetContentPosition();
 
             UpdateInputSize(true);
             Data.maskAnimator.Value.PlayAnimationReverse(0.1f);
@@ -248,7 +266,7 @@ namespace UBUI.Archipelago
 
             Data.raycast.Value.raycastTarget = false;
 
-            SetContentPosition();
+            ResetContentPosition();
 
             UpdateInputSize(true);
             Data.maskAnimator.Value.PlayAnimation();
@@ -263,10 +281,32 @@ namespace UBUI.Archipelago
 
         private void ShowMessage(string text)
         {
-            if(prevMessages.Count >= maxMessageMemory)
+            bool wasBottomVisible = currentPos >= totalSize - Data.viewportSize;
+
+            bool removeMessage = prevMessages.Count >= maxMessageMemory;
+            if(removeMessage)
             {
                 StoredMessage yeetMessage = prevMessages.Dequeue();
                 totalSize -= yeetMessage.size;
+
+                APConsoleMessage yeetObject = visibleMessages.FirstOrDefault(x =>
+                    x.enabled == true &&
+                    x.storedMessage.Equals(yeetMessage) &&
+                    Mathf.Approximately(x.rectTransform.anchoredPosition.y, 0f));
+                if(yeetObject)
+                {
+                    // The message to remove is currently visible and alive, so make sure its state is handled
+                    yeetObject.enabled = false;
+                    aliveMessages.Remove(yeetMessage);
+
+                    yeetObject.gameObject.SetActive(false);
+                    visibleMessages.Remove(yeetObject);
+                    recycleMessages.Enqueue(yeetObject);
+                }
+                else deadSize -= yeetMessage.size;
+
+                // Shift all messages up to fill the gap
+                ShiftMessages(yeetMessage.size);
             }
 
             APConsoleMessage message = GetMessageObject();
@@ -275,32 +315,33 @@ namespace UBUI.Archipelago
             float messageSize = message.rectTransform.sizeDelta.y;
             StoredMessage storedMessage = new StoredMessage(text, messageSize);
             aliveMessages.Add(storedMessage);
-            prevMessages.Enqueue(storedMessage);
 
             float messagePos = totalSize;
             totalSize += messageSize;
             UpdateSize();
 
-            if(!selected)
+            if(!selected || wasBottomVisible)
             {
-                SetContentPosition(false);
+                // This also calls UpdateMessages()
+                ResetContentPosition();
+            }
+            else if(removeMessage)
+            {
+                // No need to adjust our position, just redraw the messages
+                UpdateMessages();
             }
 
-            if(IsMessageVisible(storedMessage, messagePos))
-            {
-                message.storedMessage = storedMessage;
-                message.rectTransform.localPosition = new Vector2(0f, -(totalSize - messageSize));
+            // This is added late so that we can rerender old messages
+            // without overwriting this one (because we want to manually animate it)
+            prevMessages.Enqueue(storedMessage);
 
-                message.Show(this);
-                visibleMessages.Add(message);
-            }
-            else
-            {
-                message.gameObject.SetActive(false);
-                recycleMessages.Enqueue(message);
-            }
+            message.storedMessage = storedMessage;
+            message.rectTransform.localPosition = new Vector2(0f, -(totalSize - messageSize));
 
-            UpdateInputSize(false);
+            message.Show(this);
+            visibleMessages.Add(message);
+
+            UpdateInputSize(true);
         }
 
 
@@ -318,7 +359,7 @@ namespace UBUI.Archipelago
 
             if(!selected)
             {
-                SetContentPosition();
+                ResetContentPosition();
             }
             else UpdateMessages();
         }
@@ -508,10 +549,10 @@ namespace UBUI.Archipelago
         }
 
         
-        private void OnEnable()
-        {
-            Init();
-        }
+        // private void OnEnable()
+        // {
+        //     Init();
+        // }
 
 
         public void OnPointerEnter(PointerEventData eventData)
