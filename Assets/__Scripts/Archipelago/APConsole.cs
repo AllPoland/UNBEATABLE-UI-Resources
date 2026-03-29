@@ -37,7 +37,7 @@ namespace UBUI.Archipelago
         public SerializedReference<Image> raycast;
         public SerializedReference<UIAnimator> maskAnimator;
         public SerializedReference<UIAnimator> viewAnimator;
-        public SerializedReference<RectMask2D> viewportMask;
+        public SerializedReference<UIAnimator> scrollBarAnimator;
         public SerializedReference<Scrollbar> scrollBar;
 
         [Space]
@@ -248,11 +248,7 @@ namespace UBUI.Archipelago
             UpdateInputSize(true);
             Data.maskAnimator.Value.PlayAnimationReverse(0.1f);
             Data.viewAnimator.Value.PlayAnimationReverse(0.1f);
-
-            // Animate the mask which reveals the scrollbar
-            scrollbarMaskAnimation?.Kill();
-            scrollbarMaskAnimation = DOVirtual.Float(-20f, 0f, 0.05f, (f) => Data.viewportMask.Value.padding = new Vector4(0f, 0f, f, 0f))
-                .SetDelay(0.1f);
+            Data.scrollBarAnimator.Value.PlayAnimationReverse(0.2f);
         }
 
 
@@ -271,11 +267,7 @@ namespace UBUI.Archipelago
             UpdateInputSize(true);
             Data.maskAnimator.Value.PlayAnimation();
             Data.viewAnimator.Value.PlayAnimation();
-
-            // Animate the mask which reveals the scrollbar, to hide it
-            scrollbarMaskAnimation?.Kill();
-            scrollbarMaskAnimation = DOVirtual.Float(0f, -20f, 0.05f, (f) => Data.viewportMask.Value.padding = new Vector4(0f, 0f, f, 0f))
-                .SetDelay(0.1f);
+            Data.scrollBarAnimator.Value.PlayAnimation();
         }
 
 
@@ -535,11 +527,12 @@ namespace UBUI.Archipelago
             Data.raycast.FindValue(t);
             Data.maskAnimator.FindValue(t);
             Data.viewAnimator.FindValue(t);
-            Data.viewportMask.FindValue(t);
+            Data.scrollBarAnimator.FindValue(t);
             Data.scrollBar.FindValue(t);
 
             Data.maskAnimator.Value.Init();
             Data.viewAnimator.Value.Init();
+            Data.scrollBarAnimator.Value.Init();
 
             prevCommands = new List<string>(maxCommandMemory);
             prevMessages = new Queue<StoredMessage>(maxMessageMemory);
