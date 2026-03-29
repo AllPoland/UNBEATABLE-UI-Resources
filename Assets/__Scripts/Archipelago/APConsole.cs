@@ -51,7 +51,7 @@ namespace UBUI.Archipelago
         public event Action<string> OnMessageSent;
 
         public APConsoleMessage MessagePrefab;
-        [NonSerialized] public int maxMessageMemory = 5;
+        [NonSerialized] public int maxMessageMemory = 300;
         [NonSerialized] public int maxCommandMemory = 10;
 
         [NonSerialized] public bool Paused = false;
@@ -281,7 +281,7 @@ namespace UBUI.Archipelago
 
         private void ShowMessage(string text)
         {
-            bool wasBottomVisible = currentPos >= totalSize - Data.viewportSize;
+            bool wasBottom = currentPos >= deadSize;
 
             bool removeMessage = prevMessages.Count >= maxMessageMemory;
             if(removeMessage)
@@ -320,7 +320,7 @@ namespace UBUI.Archipelago
             totalSize += messageSize;
             UpdateSize();
 
-            if(!selected || wasBottomVisible)
+            if(!selected || (removeMessage && wasBottom))
             {
                 // This also calls UpdateMessages()
                 ResetContentPosition();
