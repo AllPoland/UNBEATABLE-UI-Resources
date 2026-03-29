@@ -74,8 +74,6 @@ namespace UBUI.Archipelago
         private bool hovered = false;
         private bool selected => hovered || EventSystem.current.currentSelectedGameObject == Data.consoleIn.Value.gameObject;
 
-        private Tweener scrollbarMaskAnimation;
-
 
         private bool IsMessageVisible(StoredMessage message, float pos)
         {
