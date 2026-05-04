@@ -71,8 +71,8 @@ namespace UBUI.Archipelago
 
         private bool showing = false;
 
-        private bool hovered = false;
-        private bool selected => hovered || EventSystem.current.currentSelectedGameObject == Data.consoleIn.Value.gameObject;
+        public bool hovered = false;
+        public bool selected => hovered || EventSystem.current.currentSelectedGameObject == Data.consoleIn.Value.gameObject;
 
 
         private bool IsMessageVisible(StoredMessage message, float pos)
